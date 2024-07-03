@@ -41,9 +41,11 @@
 		$('[data-toggle="tooltip"]').tooltip();   		
 		
 		let cardImg = $('[alt="Card image"]');			
+		let imgWidth = cardImg.width();
 		if(cardImg.parent().width()<cardImg.width()) cardImg.addClass('w-100');
 		window.addEventListener("resize", function(){
-			if(cardImg.parent().width()<cardImg.width()) cardImg.addClass('w-100');			
+			if(cardImg.parent().width()<imgWidth) cardImg.addClass('w-100');
+			else cardImg.removeClass('w-100');
 		});
 				
 		
