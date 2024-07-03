@@ -38,14 +38,14 @@
 		});	
 		
 		
-		$('[data-toggle="tooltip"]').tooltip();   
+		$('[data-toggle="tooltip"]').tooltip();   		
 		
-		
-// 		console.log($("#image").width());
-// 		console.log($("#card-header").width());
-		
-		
-		if($("#card-header").width()<$("#image").width()) $("#image").addClass('w-100');
+		let cardImg = $('[alt="Card image"]');			
+		if(cardImg.parent().width()<cardImg.width()) cardImg.addClass('w-100');
+		window.addEventListener("resize", function(){
+			if(cardImg.parent().width()<cardImg.width()) cardImg.addClass('w-100');			
+		});
+				
 		
 		
 	});
