@@ -115,7 +115,7 @@ public class ImageController {
 				
 				// 전달 데이터 - 글번호, 조회수 증가 여부(1:증가, 0:증가 안함) : 배열 또는 Map						
 				//가져온 데이터를 JSP로 보내기 위해 request에 담는다.
-				request.setAttribute("boardVO", Execute.execute(Init.get("/board/view.do"),new Long[]{no, 0L}));
+				request.setAttribute("boardVO", Execute.execute(Init.get("/board/view.do"),no));
 				jsp = "board/updateForm";
 				break;
 			case "/image/update.do":
