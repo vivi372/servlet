@@ -81,7 +81,7 @@
    							<option value="c">내용</option>
    							<option value="f">파일명</option>
    							<option value="tc">제목+내용</option>
-   							<option value="cw">내용+파일명</option>
+   							<option value="cf">내용+파일명</option>
    							<option value="tcf">모두</option>
    						</select>    					
   					</div>

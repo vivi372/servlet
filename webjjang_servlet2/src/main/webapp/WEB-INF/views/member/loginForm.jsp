@@ -13,7 +13,7 @@
 		<i class="fa fa-sign-in"></i>
 		로그인	
 		</b></h3>
-		<form action="login.do" method="post">
+		<form action="/member/login.do" method="post">
 	  		<div class="form-group">
 	    		<label for="id">ID:</label>
 	    		<input type="text" class="form-control" placeholder="ID를 입력하세요" id="id" name="id" autocomplete="none">
