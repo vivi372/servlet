@@ -326,7 +326,7 @@ public class ImageDAO extends DAO{
 			// key안에 t가 포함되어 있으면 title로 검색을 한다.
 			if(key.indexOf("t") >= 0) sql += " or title like ?";
 			if(key.indexOf("c") >= 0) sql += " or content like ? ";
-			if(key.indexOf("w") >= 0) sql += " or name like ? ";
+			if(key.indexOf("f") >= 0) sql += " or fileName like ? ";
 			sql += " ) and ";
 		}
 		return sql;
@@ -340,7 +340,7 @@ public class ImageDAO extends DAO{
 		if(word != null && !word.equals("")) {
 			if(key.indexOf("t") >= 0) pstmt.setString(++idx, "%"+word+"%");
 			if(key.indexOf("c") >= 0) pstmt.setString(++idx, "%"+word+"%");
-			if(key.indexOf("w") >= 0) pstmt.setString(++idx, "%"+word+"%");
+			if(key.indexOf("f") >= 0) pstmt.setString(++idx, "%"+word+"%");
 		}
 		return idx;
 	}

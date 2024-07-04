@@ -79,10 +79,10 @@
    						<select name="key" id="key" class="form-control">
    							<option value="t">제목</option>
    							<option value="c">내용</option>
-   							<option value="w">작성자</option>
+   							<option value="f">파일명</option>
    							<option value="tc">제목+내용</option>
-   							<option value="cw">내용+작성자</option>
-   							<option value="tcw">모두</option>
+   							<option value="cw">내용+파일명</option>
+   							<option value="tcf">모두</option>
    						</select>    					
   					</div>
  				 	<input type="text" class="form-control" placeholder="검색" id="word" name="word">

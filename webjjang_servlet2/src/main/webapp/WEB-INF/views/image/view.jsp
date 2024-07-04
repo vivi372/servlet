@@ -48,7 +48,11 @@
 			else cardImg.removeClass('w-100');
 		});
 				
-		
+		$("#deleteBtn").click(function() {
+			// js 경고창 - alert : 일반 경고, confirm : 확인/취소, prompt : 키인
+			//확인 창이 나타나는데 취소를 누르면 삭제 페이지 이동을 취소시킨다.
+			if(!confirm("정말삭제하시겠습니까?")) return false;
+		});
 		
 	});
 </script>
@@ -98,44 +102,17 @@
 			</c:if>
 			<!--<button class="btn btn-secondary" id="deleteBtn" data-target="#myModal">삭제</button>-->
 			<c:if test="${login.id == imageVO.id  }">
-				<button type="button" id="deleteBtn" class="btn btn-secondary" data-toggle="modal" data-target="#deleteModal">
+				<a href="delete.do?perPageNum=${param.perPageNum }&no=${param.no }&deleteFileName=${imageVO.fileName }">
+				<button type="button" id="deleteBtn" class="btn btn-secondary">
 	   				삭제
 	 			</button>
+	 			</a>
 			</c:if>	
 		</div>		
 	<!-- container의 끝 -->
 	</div>
-	<!-- 글 삭제 모달 -->
-	<!-- The Modal -->
-  	<div class="modal fade" id="deleteModal">
-    	<div class="modal-dialog modal-dialog-centered">
-      		<div class="modal-content">
-      			
-	        	<!-- Modal Header -->
-	       		<div class="modal-header">
-	         		<h4 class="modal-title"><i class="material-icons">delete</i>삭제 확인</h4>
-	          		<button type="button" class="close delCelBtn" data-dismiss="modal">&times;</button>
-	        	</div>
-	        
-	        	<!-- Modal body -->
-	        	<form action="delete.do?perPageNum=${param.perPageNum }" method="post" id="deleteForm" class="form-inline" enctype="multipart/form-data">
-		        	<div class="modal-body">
-		        		<b>정말로 삭제하시겠습니까?</b><br>
-		        			<input id="no" name="no" type="hidden" value="${param.no }">							
-							<input name="deleteFileName" value="${imageVO.fileName }" type="hidden">
-		        	</div>
-		        
-		        	<!-- Modal footer -->
-		        	<div class="modal-footer">	        		
-						<button class="btn btn-secondary">삭제</button>
-		          		<button type="button" class="btn btn-dark delCelBtn" data-dismiss="modal">취소</button>
-		        	</div>
-				</form>
-        		
-      		</div>
-    	</div>
-  	</div>
- 	
+	
+ 	<!-- 이미지 바꾸기 모달 -->
  	<!-- The Modal -->
 	<div class="modal" id="changeImageModal">
   		<div class="modal-dialog">

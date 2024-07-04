@@ -176,15 +176,12 @@ public class ImageController {
 				break;
 			case "/image/delete.do":
 				System.out.println("5.이미지 게시판 글삭제");
-				//이미지 업로드 처리
-				//new MultipartRequest(request, 실제저장위치,사이즈 제한,encoding,중복처리객체);
-				//input name을 다르게 해서 올리세요 file1 , file2
-				multi = new MultipartRequest(request, uploadFilePath,uploadFileSizeLimit,encType,new DefaultFileRenamePolicy());
+			
 				
 				// 데이터 수집 - DB에서 실행에 필요한 데이터 - 글번호, 비밀번호 - BoardVO
 				ImageVO deleteVO = new ImageVO();
-				no = Long.parseLong(multi.getParameter("no"));
-				deleteFileName = multi.getParameter("deleteFileName");
+				no = Long.parseLong(request.getParameter("no"));
+				deleteFileName = request.getParameter("deleteFileName");
 				deleteVO.setNo(no);
 				deleteVO.setId(id);				
 				
@@ -202,7 +199,7 @@ public class ImageController {
 				if(deleteFile.exists()) deleteFile.delete();
 				
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.				
-				jsp = "redirect:/image/list.do?perPageNum="+multi.getParameter("perPageNum");
+				jsp = "redirect:/image/list.do?perPageNum="+request.getParameter("perPageNum");
 				session.setAttribute("msg", "글이 성공적으로 삭제되었습니다.");
 				break;
 			case "0":
@@ -218,7 +215,7 @@ public class ImageController {
 			} // end of switch
 		} catch (Exception e) {
 			
-			// e.printStackTrace();
+			e.printStackTrace();
 			System.out.println();
 			System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
 			System.out.println("$%@ << 오류 출력 >>                         $%@");
