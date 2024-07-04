@@ -69,13 +69,13 @@
   						<img class="rounded" src="${imageVO.fileName }" alt="Card image" id="image">
 	  					<div class="card-img-overlay ml-2">    					
 	    					<c:if test="${login.id == imageVO.id  }">
-								<button type="button" class="btn btn-light" data-toggle="modal" data-target="#changeImageModal">
+								<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#changeImageModal">
 	  								이미지 변경
 								</button>
 							</c:if>
-							<c:if test="${login.id != imageVO.id  }">
-								<a href="${imageVO.fileName }" download class="btn btn-light">다운로드</a>
-							</c:if>
+							
+							<a href="${imageVO.fileName }" download class="btn btn-light">다운로드</a>
+							
 	  					</div>
   					</div>
   					<div class="card-body">	    				

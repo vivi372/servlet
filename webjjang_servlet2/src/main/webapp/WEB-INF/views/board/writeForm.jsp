@@ -107,7 +107,7 @@
 			<!-- 등록 버튼을 클릭하면 1. click-btn 2.submit-form 이벤트로 처리 가능하다. -->
   			<button type="submit" class="btn btn-dark" id="writeBtn">등록</button>
  			<button type="reset" class="btn btn-light">초기화</button>
-  			<button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
+  			<button type="button" class="btn btn-secondary" onclick="location='/board/list.do?page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }';">취소</button>
 		</div>		
 	</form>
 	</div>

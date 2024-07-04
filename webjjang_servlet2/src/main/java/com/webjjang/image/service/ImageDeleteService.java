@@ -15,10 +15,8 @@ public class ImageDeleteService implements Service {
 	}
 	
 	@Override
-	public Integer service(Object obj) throws Exception {
-		// DB board에서 리스트 쿼리 실행해서 데이터 가져오기 - 리턴
-		// DB 처리는 DAO에서 처리 - BoardDAO.delete()
-		// BoardController - (Execute) - [BoardListService] - BoardDAO.delete()
+	public Integer service(Object obj) throws Exception {		
+		// ImageController - (Execute) - [ImageDeleteService] - ImageDAO.delete()
 		return dao.delete((ImageVO)obj);
 	}
 

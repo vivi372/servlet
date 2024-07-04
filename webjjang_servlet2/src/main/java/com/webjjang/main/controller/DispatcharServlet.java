@@ -105,11 +105,11 @@ public class DispatcharServlet extends HttpServlet {
 			break;
 		case "/member":
 			System.out.println("회원 관리");		
-			
+			System.out.println(request.getHeader("referer"));
 			jsp = memberController.execute(request);
 			break;
 		case "/image":
-			System.out.println("회원 관리");		
+			System.out.println("이미지 게시판");		
 			
 			jsp = imageController.execute(request);
 			break;

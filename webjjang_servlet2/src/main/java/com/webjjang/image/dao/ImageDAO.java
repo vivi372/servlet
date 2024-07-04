@@ -266,7 +266,7 @@ public class ImageDAO extends DAO{
 			result = pstmt.executeUpdate();
 			// 6. 표시 또는 담기
 			if(result == 0) { // 글번호가 존재하지 않거나 비번 틀림. -> 예외로 처리한다.
-				throw new Exception("예외 발생 : 글번호나 아이디가 맞지 않습니다. 정보를 확인해 주세요.");
+				throw new Exception("예외 발생 : 글번호나 본인글이 맞지 않습니다. 정보를 확인해 주세요.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

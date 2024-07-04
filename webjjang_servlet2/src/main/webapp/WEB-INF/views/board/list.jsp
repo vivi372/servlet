@@ -128,7 +128,7 @@
 		
 		<tr>
 			<td colspan="5">
-				<a href="/board/writeForm.do?perPageNum=${pageObject.getPerPageNum()}"><button class="btn btn-dark">글 등록</button></a>
+				<a href="/board/writeForm.do?${pageObject.getPageQuery()}"><button class="btn btn-dark">글 등록</button></a>
 			</td>
 		</tr>
 	</table>

@@ -186,20 +186,20 @@ public class ImageController {
 				no = Long.parseLong(multi.getParameter("no"));
 				deleteFileName = multi.getParameter("deleteFileName");
 				deleteVO.setNo(no);
-				deleteVO.setId(id);
+				deleteVO.setId(id);				
+				
+				// DB 처리
+				Execute.execute(Init.get(uri), deleteVO);				
+				
+				System.out.println();
+				System.out.println("***************************");
+				System.out.println("**  " + deleteVO.getNo()+ "글이 삭제되었습니다.  **");
+				System.out.println("***************************");
 				
 				// 기존 사진 파일 삭제
 				deleteFilePath = request.getServletContext().getRealPath(deleteFileName);
 				deleteFile = new File(deleteFilePath);
 				if(deleteFile.exists()) deleteFile.delete();
-				
-				
-				// DB 처리
-				Execute.execute(Init.get(uri), deleteVO);
-				System.out.println();
-				System.out.println("***************************");
-				System.out.println("**  " + deleteVO.getNo()+ "글이 삭제되었습니다.  **");
-				System.out.println("***************************");
 				
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.				
 				jsp = "redirect:/image/list.do?perPageNum="+multi.getParameter("perPageNum");

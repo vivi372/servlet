@@ -57,7 +57,7 @@
 		
 		<button type="submit" class="btn btn-dark">수정</button>
 		<button type="reset" class="btn btn-light">리셋</button>
-		<button type="button" class="btn btn-secondary cancelBtn" onclick="history.back();">취소</button>	
+		<button type="button" class="btn btn-secondary cancelBtn" onclick="location='/image/view.do?no=${imageVO.no }&inc=0&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }'">취소</button>	
 		</div>	
 </form>
 </div>

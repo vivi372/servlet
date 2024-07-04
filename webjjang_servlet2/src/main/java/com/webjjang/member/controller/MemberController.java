@@ -36,7 +36,7 @@ public class MemberController {
 		String jsp = null;
 		// 입력 받는 데이터 선언
 		Long no = 0L;
-		
+		String preUri = request.getHeader("referer").substring("http://localhost".length());
 		try { // 정상 처리
 		
 			// 메뉴 처리 : CRUD DB 처리 - Controller - Service - DAO
@@ -44,8 +44,11 @@ public class MemberController {
 			case "/member/loginForm.do":
 				System.out.println("a.로그인 폼");
 				
-				jsp = "member/loginForm";			
 				
+				jsp = "member/loginForm";	
+				//이전 페이지 주소 저장
+				
+				session.setAttribute("preUri", preUri);
 				break;			
 			case "/member/login.do":
 				System.out.println("a-1.로그인 처리");				
@@ -64,7 +67,8 @@ public class MemberController {
 				}
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.		
 				//원래는 main이나 진행하려고 했던 uri로 이동시킨다.
-				jsp = "redirect:/board/list.do";
+				jsp = "redirect:"+session.getAttribute("preUri");
+				session.removeAttribute("preUri");
 				// 로그인 완료 메시지 처리
 				session.setAttribute("msg", "성공적으로 로그인되었습니다.");
 				break;
@@ -73,7 +77,7 @@ public class MemberController {
 				
 				session.removeAttribute("login");
 				
-				jsp = "redirect:/board/list.do";			
+				jsp = "redirect:"+preUri;			
 				session.setAttribute("msg", "성공적으로 로그아웃되었습니다.");
 				break;
 			case "/member/list.do":

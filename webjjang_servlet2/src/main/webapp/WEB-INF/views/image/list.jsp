@@ -144,7 +144,7 @@
 	</c:if>
 
 	<c:if test="${!empty login }">
-		<a class="btn btn-dark mt-2" href="/image/writeForm.do?perPageNum=${pageObject.perPageNum}">글 등록</a>
+		<a class="btn btn-dark mt-2" href="/image/writeForm.do?${pageObject.getPageQuery()}">글 등록</a>
 	</c:if>
 	<div class="pagination justify-content-center mt-2">
 		<pageNav:pageNav listURI="list.do" pageObject="${pageObject }"></pageNav:pageNav>			
