@@ -35,10 +35,49 @@
   background-color: #222; 
   border-color: #444;
 }
+.imageDiv{
+	background: black;
+}
 
+
+.title {
+	height: 60px;
+	width: 6rem;
+   text-overflow: ellipsis;
+   overflow: hidden;
+   word-break: break-word;
+    
+   display: -webkit-box;
+   -webkit-line-clamp: 2; // 원하는 라인수
+   -webkit-box-orient: vertical
+}
 </style>
 <script type="text/javascript">
+	
 	$(function() {
+		
+		//이미지 사이즈 조정 5:4
+		let imgWidth = $(".imageDiv:first").width();
+		let imgHeight = $(".imageDiv:first").height();
+		console.log("w="+imgWidth+" h= "+imgHeight);
+		//높이 계산 - 너비는 동일하다 : 이미지와 이미지를 감싸고 있는 div의 높이로 사용
+		let height = imgWidth/5*4;
+		//전체 imageDiv의 높이를 조정한다.
+		$(".imageDiv").height(height);
+		//이미지 배열로 처리하면 안 된다.  foreach 사용
+		$(".imageDiv > img").each(function(idx,image) {		
+			//이미지가 계산된 높이 보다 크면 줄인다.
+			if($(this).height()>height) {
+				let iamge_width = $(this).width();
+				let iamge_height = $(this).height();
+				let width =  height / iamge_width * iamge_height;
+				//이미지 높이 줄이기
+				$(this).height(height);					
+				$(this).width(width);					
+			}
+		});
+		
+		
 		console.log("제이쿼리 로딩");
 		$(".dataRow").click(function() {
 			//alert("click");
@@ -126,10 +165,12 @@
 				</c:if>
 				<div class="col-md-4">
 		    		<div class="card dataRow" data-no="${vo.no }" style="width:100%">
-		    			<img class="card-img-top" src="${vo.fileName }" alt="Card image" height="400px" style="width:100%">
+		    			<div class="imageDiv text-center align-content-center">
+		    				<img class="card-img-top" src="${vo.fileName }" alt="Card image">
+		    			</div>
 		    			<div class="card-body">
-		      				<h4 class="card-title">${vo.no}. ${vo.title }</h4>
-		      				<p class="card-text">
+		      				<h4 class="card-title text-truncate title">${vo.no}. ${vo.title }</h4>
+		      				<p class="card-text text-truncate">
 		      					작성자 : ${vo.name }
 		      					<br>
 		      					작성일 : ${vo.writeDate }

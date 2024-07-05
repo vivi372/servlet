@@ -29,8 +29,10 @@ public class AuthorityFilter extends HttpFilter implements Filter {
 		authMap.put("/image/update.do", 1);
 		authMap.put("/image/delete.do", 1);
 		authMap.put("/image/writeForm.do", 1);
+		authMap.put("/image/changeImage.do", 1);
 		authMap.put("/image/write.do", 1);
 		authMap.put("/member/logout.do", 1);
+		
 	}
 	/**
 	 * 
