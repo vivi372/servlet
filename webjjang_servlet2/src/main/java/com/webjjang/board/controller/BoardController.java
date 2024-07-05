@@ -14,7 +14,7 @@ import com.webjjang.util.page.ReplyPageObject;
 public class BoardController {
 
 	
-	public String execute(HttpServletRequest request) throws Exception {
+	public String execute(HttpServletRequest request) {
 		System.out.println("BoardController.execute()");
 		
 		HttpSession session = request.getSession();
@@ -150,30 +150,19 @@ public class BoardController {
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.				
 				jsp = "redirect:list.do?perPageNum="+request.getParameter("perPageNum");
 				session.setAttribute("msg", "글이 성공적으로 삭제되었습니다.");
-				break;
-			case "0":
-				
-				return jsp;
-
-			default:
-				System.out.println("####################################");;
-				System.out.println("## 잘못된 메뉴를 선택하셨습니다.          ##");;
-				System.out.println("## [0~5, 0] 중에서 입력하셔야 합니다.    ##");;
-				System.out.println("####################################");;
+				break;			
+			default:				
+				jsp = "error/404";
 				break;
 			} // end of switch
 		} catch (Exception e) {
 			
-			// e.printStackTrace();
-			System.out.println();
-			System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
-			System.out.println("$%@ << 오류 출력 >>                         $%@");
-			System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
-			System.out.println("$%@ 타입 : " + e.getClass().getSimpleName());
-			System.out.println("$%@ 내용 : " + e.getMessage());
-			System.out.println("$%@ 조치 : 데이터를 확인 후 다시 실행해 보세요.");
-			System.out.println("$%@     : 계속 오류가 나면 전산담당자에게 연락하세요.");
-			System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
+			//e.printStackTrace();
+			
+			//예외객체를 jsp에서 사용하기 위해 request에 담는다.
+			request.setAttribute("e", e);
+			
+			jsp = "error/500";
 			
 			//throw e;
 		} // end of try~catch		

@@ -104,8 +104,7 @@ public class DispatcharServlet extends HttpServlet {
 			}			
 			break;
 		case "/member":
-			System.out.println("회원 관리");		
-			System.out.println(request.getHeader("referer"));
+			System.out.println("회원 관리");					
 			jsp = memberController.execute(request);
 			break;
 		case "/image":
@@ -114,7 +113,7 @@ public class DispatcharServlet extends HttpServlet {
 			jsp = imageController.execute(request);
 			break;
 		default:
-			request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/error/nomodule404.jsp").forward(request, response);
 			return;			
 		}
 		//jsp 정보 앞에 "redirect:"이 붙어 있으면 redirect 시킨다.(페이지 자동 이동)
