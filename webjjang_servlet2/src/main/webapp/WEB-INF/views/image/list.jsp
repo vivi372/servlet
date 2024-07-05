@@ -39,18 +39,6 @@
 	background: black;
 }
 
-
-.title {
-	height: 60px;
-	width: 6rem;
-   text-overflow: ellipsis;
-   overflow: hidden;
-   word-break: break-word;
-    
-   display: -webkit-box;
-   -webkit-line-clamp: 2; // 원하는 라인수
-   -webkit-box-orient: vertical
-}
 </style>
 <script type="text/javascript">
 	
@@ -169,7 +157,7 @@
 		    				<img class="card-img-top" src="${vo.fileName }" alt="Card image">
 		    			</div>
 		    			<div class="card-body">
-		      				<h4 class="card-title text-truncate title">${vo.no}. ${vo.title }</h4>
+		      				<h4 class="card-title text-truncate">${vo.no}. ${vo.title }</h4>
 		      				<p class="card-text text-truncate">
 		      					작성자 : ${vo.name }
 		      					<br>

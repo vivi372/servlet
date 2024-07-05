@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	//servlet을 걸치지 않고 들어온 경우
+	//uri가 없어서 리퀘스트에서 꺼내서 넣어둔다.
+	if(session.getAttribute("uri") == null){
+		session.setAttribute("uri", request.getHeader("referer"));
+	}
+%>
 <!-- sitemesh 미적요 페이지 - 웹 라이브러리 없음 -->
 <!DOCTYPE html>
 <html>
@@ -16,11 +23,49 @@
 <!-- icon 라이브러리 등록 Awesome4 / google-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style type="text/css">
+	#errorDiv > .row {
+		padding: 10px;
+		border-top: 1px dotted #ccc;
+		margin: 0 10px;
+	}
+	
+</style>
+
 </head>
 <body>
 <div class="container">
-	<h1>잘못된 자원 요청</h1>
-	dsfsddfssdfsdfdsfds
+	<div class="card mb-2">
+  		<div class="card-header"><h3><i class="material-icons">error_outline</i> 요청 자원 오류(404)</h3></div>
+  		<div class="card-body" id="errorDiv">  			
+  			<div class="row">
+  				<div class="col-md-3"> 요청 uri</div>
+  				<div class="col-md-9">
+  					${uri }
+  				</div>
+  			</div>
+  			<div class="row">
+  				<div class="col-md-3">오류 메세지</div>
+  				<div class="col-md-9">
+  					요청하신 페이지의 주소는 존재하지 않거나 지원하지 않습니다.  					
+  				</div>
+  			</div>
+  			<div class="row">
+  				<div class="col-md-3">조치 사항</div>
+  				<div class="col-md-9">
+  					요청하신 페이지의 주소를 확인하시고 다시 시도해주세요.
+  				</div>
+  			</div>  			
+			<div class="text-center" style="border-top: 1px dotted #ccc;">
+				<img alt="오류 이미지" src="/upload/img/errors_9679787.png" id="errorImg">
+			</div>
+  			
+  		</div>
+  		<div class="card-footer">
+  			<a href="/board/list.do" class="btn btn-dark">일반 게시판으로 가기</a>
+  		</div>
+	</div>	
 </div>
 </body>
 </html>

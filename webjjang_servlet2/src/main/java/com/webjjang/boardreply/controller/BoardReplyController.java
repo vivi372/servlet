@@ -14,7 +14,7 @@ import com.webjjang.util.page.ReplyPageObject;
 public class BoardReplyController {
 
 	
-	public String execute(HttpServletRequest request) throws Exception {
+	public String execute(HttpServletRequest request) {
 		System.out.println("BoardReplyController.execute()");
 		// session을 request에서 부터 꺼낸다.
 		HttpSession session = request.getSession();

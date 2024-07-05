@@ -72,7 +72,8 @@ public class DispatcharServlet extends HttpServlet {
 		String jsp = null;
 		
 		if(pos==-1) {
-			request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
+			request.setAttribute("uri", uri);
+			request.getRequestDispatcher("/WEB-INF/views/error/nomodule404.jsp").forward(request, response);
 			return;
 		}
 		
@@ -85,23 +86,15 @@ public class DispatcharServlet extends HttpServlet {
 		switch (module) {
 		case "/board":
 			System.out.println("일반 게시판");
-			try {
-				jsp = boardController.execute(request);			
-			} catch (Exception e) {		
-				System.out.println("서블릿 - DB 에러");
-				request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
-				return;
-			}			
+			
+			jsp = boardController.execute(request);			
+					
 			break;
 		case "/boardreply":
 			System.out.println("일반 게시판 댓글");
-			try {
-				jsp = boardReplyController.execute(request);
-			} catch (Exception e) {		
-				System.out.println("서블릿 - DB 에러");
-				request.getRequestDispatcher("/WEB-INF/views/error/404.jsp").forward(request, response);
-				return;
-			}			
+			
+			jsp = boardReplyController.execute(request);
+					
 			break;
 		case "/member":
 			System.out.println("회원 관리");					
@@ -113,6 +106,7 @@ public class DispatcharServlet extends HttpServlet {
 			jsp = imageController.execute(request);
 			break;
 		default:
+			request.setAttribute("uri", uri);
 			request.getRequestDispatcher("/WEB-INF/views/error/nomodule404.jsp").forward(request, response);
 			return;			
 		}

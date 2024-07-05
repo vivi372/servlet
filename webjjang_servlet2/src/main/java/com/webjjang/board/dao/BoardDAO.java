@@ -347,7 +347,7 @@ public class BoardDAO extends DAO{
 			+ " where no = ?"; 
 	final String VIEW = "select no, title, content, writer, "
 			+ " to_char(writeDate, 'yyyy-mm-dd') writeDate, hit "
-			+ " form board "
+			+ " from board "
 			+ " where no = ?";
 	final String WRITE = "insert into board "
 			+ " (no, title, content, writer, pw) "
