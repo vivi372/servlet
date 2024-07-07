@@ -94,20 +94,20 @@
 		</div>	
 		<div class="mt-3">
 			<a href="list.do?page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }" class="btn btn-dark">목록</a>
-			<c:if test="${login.id == imageVO.id  }">
+			
 				<a class="btn btn-light" href="updateForm.do?no=${imageVO.no}&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }"
 				data-toggle="tooltip" data-placement="top" title="이미지 수정은 이미지 변경에서 가능합니다." id="updateBtn">
 						수정
 				</a>
-			</c:if>
+			
 			<!--<button class="btn btn-secondary" id="deleteBtn" data-target="#myModal">삭제</button>-->
-			<c:if test="${login.id == imageVO.id  }">
+			
 				<a href="delete.do?perPageNum=${param.perPageNum }&no=${param.no }&deleteFileName=${imageVO.fileName }">
 				<button type="button" id="deleteBtn" class="btn btn-secondary">
 	   				삭제
 	 			</button>
 	 			</a>
-			</c:if>	
+			
 		</div>		
 	<!-- container의 끝 -->
 	</div>

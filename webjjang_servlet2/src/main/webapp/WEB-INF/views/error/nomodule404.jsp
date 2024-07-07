@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	//servlet을 걸치지 않고 들어온 경우
-	//uri가 없어서 리퀘스트에서 꺼내서 넣어둔다.
-	if(session.getAttribute("uri") == null){
-		session.setAttribute("uri", request.getHeader("referer"));
-	}
-%>
+
 <!-- sitemesh 미적요 페이지 - 웹 라이브러리 없음 -->
 <!DOCTYPE html>
 <html>
@@ -32,7 +26,14 @@
 	}
 	
 </style>
+<script type="text/javascript">
 
+$(function() {
+	let uri = window.location.pathname;
+	//alert(uri);
+	$("#uri").text(uri);
+});
+</script>
 </head>
 <body>
 <div class="container">
@@ -42,7 +43,7 @@
   			<div class="row">
   				<div class="col-md-3"> 요청 uri</div>
   				<div class="col-md-9">
-  					${uri }
+  					<span id="uri"></span>
   				</div>
   			</div>
   			<div class="row">

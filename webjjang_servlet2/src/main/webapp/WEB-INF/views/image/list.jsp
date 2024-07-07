@@ -170,11 +170,8 @@
   			<!-- 이미지의 데이터가 있는 만큼 반복해서 표시하는 처리 끝 -->
   			</c:forEach>
 		</div>
-	</c:if>
-
-	<c:if test="${!empty login }">
-		<a class="btn btn-dark mt-2" href="/image/writeForm.do?${pageObject.getPageQuery()}">글 등록</a>
-	</c:if>
+	</c:if>	
+	<a class="btn btn-dark mt-2" href="/image/writeForm.do?${pageObject.getPageQuery()}">글 등록</a>	
 	<div class="pagination justify-content-center mt-2">
 		<pageNav:pageNav listURI="list.do" pageObject="${pageObject }"></pageNav:pageNav>			
 	</div>

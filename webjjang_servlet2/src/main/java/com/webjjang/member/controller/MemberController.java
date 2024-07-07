@@ -1,6 +1,9 @@
 package com.webjjang.member.controller;
 
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +13,7 @@ import com.webjjang.member.vo.LoginVO;
 import com.webjjang.util.exe.Execute;
 import com.webjjang.util.page.PageObject;
 import com.webjjang.util.page.ReplyPageObject;
+import com.webjjang.util.preuri.PreviousUri;
 
 //Member Module 에 맞는 메뉴 선택 , 데이터 수집(기능별), 예외 처리
 public class MemberController {
@@ -36,7 +40,9 @@ public class MemberController {
 		String jsp = null;
 		// 입력 받는 데이터 선언
 		Long no = 0L;
-		String preUri = request.getHeader("referer").substring("http://localhost".length());
+		
+		PreviousUri preUri = new PreviousUri(request);
+		
 		try { // 정상 처리
 		
 			// 메뉴 처리 : CRUD DB 처리 - Controller - Service - DAO
@@ -47,9 +53,18 @@ public class MemberController {
 				
 				jsp = "member/loginForm";	
 				//이전 페이지 주소 저장
+				String upcomingUri = (String) session.getAttribute("upcomingUri");
 				
-				session.setAttribute("preUri", preUri);
-				break;			
+				if(session.getAttribute("upcomingUri") != null) {
+					session.setAttribute("preUri", upcomingUri);
+					session.removeAttribute("upcomingUri");					
+				} else {					
+					session.setAttribute("preUri", preUri.getPreUri());						
+				}
+				
+				System.out.println("loginForm-perUri : "+session.getAttribute("preUri"));
+				
+				break;
 			case "/member/login.do":
 				System.out.println("a-1.로그인 처리");				
 				
@@ -77,7 +92,7 @@ public class MemberController {
 				
 				session.removeAttribute("login");
 				
-				jsp = "redirect:"+preUri;			
+				jsp = "redirect:"+preUri.getPreUri();			
 				session.setAttribute("msg", "성공적으로 로그아웃되었습니다.");
 				break;
 			case "/member/list.do":
