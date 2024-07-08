@@ -13,7 +13,7 @@ public class PreviousUri {
 		req = request;
 	}
 	
-	public String getPreUri() {
+	public String getNextUri() {
 		Enumeration<String> params = req.getParameterNames();
 		String param = "?";
 		while (params.hasMoreElements()) {
@@ -30,9 +30,8 @@ public class PreviousUri {
 		return param;
 	}
 	
-	public String getNextUri() {
+	public String getPreUri() {
 		String preUri = req.getHeader("referer");
-		
 		
 		if(preUri.indexOf("word")>0) {
 			String wordValue = preUri.substring(preUri.indexOf("word")+5,((preUri.indexOf("&",preUri.indexOf("word"))==-1)?preUri.length():preUri.indexOf("&",preUri.indexOf("word"))));
