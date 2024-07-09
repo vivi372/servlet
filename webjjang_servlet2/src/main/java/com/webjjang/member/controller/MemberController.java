@@ -180,7 +180,7 @@ public class MemberController {
 				vo.setPhoto(photo);			
 				Execute.execute(Init.get(uri),vo);
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.				
-				jsp = "redirect:loginForm.do";
+				jsp = "redirect:/board/list.do";
 				session.setAttribute("msg", "성공적으로 가입되었습니다.");
 				break;
 			case "/member/checkId.do":

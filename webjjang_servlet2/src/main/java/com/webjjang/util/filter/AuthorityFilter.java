@@ -50,7 +50,7 @@ public class AuthorityFilter extends HttpFilter implements Filter {
 			login = (LoginVO) session.getAttribute("login");
 			//로그인을 하지 않은 경우 처리 - 로그인 페이지로 이동
 			if(login == null) {
-				session.setAttribute("upcomingUri", uri+new PreviousUri(req).getNextUri());
+				session.setAttribute("upcomingUri", new PreviousUri(req).getNextUri());
 				
 				//권한 메시지 모달 창 표시
 				session.setAttribute("msg", "로그인이 필요한 서비스 입니다. 로그인해 주세요.");

@@ -16,7 +16,7 @@ public class MemberWriteService implements Service {
 	
 	@Override
 	public Integer service(Object obj) throws Exception {		
-		// MemberController - (Execute) - [MemberLoginService] - MemberDAO.login()
+		// MemberController - (Execute) - [MemberWriteService] - MemberDAO.write()
 		return dao.write((MemberVO)obj);
 	}
 

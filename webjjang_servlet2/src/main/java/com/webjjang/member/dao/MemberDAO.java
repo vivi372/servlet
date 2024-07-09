@@ -136,7 +136,7 @@ public class MemberDAO extends DAO{
 	} // end of checkId()
 	
 	// 3. 회원가입 처리
-	// MemberController - (Execute) - MemberViewService - [MemberDAO.write()]
+	// MemberController - (Execute) - MemberWriteService - [MemberDAO.write()]
 	public int write(MemberVO vo) throws Exception{
 		// 결과를 저장할 수 있는 변수 선언.
 		int result = 0;
@@ -145,7 +145,7 @@ public class MemberDAO extends DAO{
 			// 1. 드라이버 확인 - DB
 			// 2. 연결
 			con = DB.getConnection();
-			// 3. sql - 아래 LIST
+			// 3. sql - 아래 WRITE
 			// 4. 실행 객체 & 데이터 세팅
 			pstmt = con.prepareStatement(WRITE);
 			pstmt.setString(1, vo.getId());

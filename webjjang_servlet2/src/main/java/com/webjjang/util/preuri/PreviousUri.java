@@ -15,6 +15,7 @@ public class PreviousUri {
 	
 	public String getNextUri() {
 		Enumeration<String> params = req.getParameterNames();
+		String uri = req.getRequestURI();
 		String param = "?";
 		while (params.hasMoreElements()) {
 			String name = (String) params.nextElement();
@@ -25,9 +26,14 @@ public class PreviousUri {
 				e.printStackTrace();
 			}
 		}
-		param=param.substring(0,param.lastIndexOf('&'));
+		System.out.println(uri);
+		if(param.equals("?")) {
+			uri += " ";
+		}else {
+			uri += param.substring(0,param.lastIndexOf('&'));			
+		}
 		//System.out.println(param);
-		return param;
+		return uri;
 	}
 	
 	public String getPreUri() {
