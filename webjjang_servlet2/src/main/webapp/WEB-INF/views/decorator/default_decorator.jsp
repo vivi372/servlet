@@ -119,7 +119,7 @@
 				<c:if test="${!empty login }">
 					<!-- 로그인을 했을때 -->
 					<li class="nav-item mt-2 mr-1">
-						<img src="${login.photo }" class="rounded-circle" alt="회원 이미지" width="30px" height="30px">
+						<img src="${login.photo }" class="rounded-circle mb-1" alt="회원 이미지" width="30px" height="30px">
 						<b class="text-secondary">어서오세요 ${login.name }님</b>
 					</li>
 			  		<li class="nav-item">

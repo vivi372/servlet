@@ -1,6 +1,8 @@
 package com.webjjang.member.controller;
 
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -51,6 +53,9 @@ public class MemberController {
 		//System.out.println(uploadFilePath);
 		int uploadFileSizeLimit = 100*1024*1024;
 		String encType = "UTF-8";
+		
+		File realSavePathFile = new File(uploadFilePath);
+		if(realSavePathFile.exists()) realSavePathFile.mkdirs();
 		
 		try { // 정상 처리
 		
@@ -166,7 +171,8 @@ public class MemberController {
 				String birth = multi.getParameter("birth");
 				String tel = multi.getParameter("tel");
 				String email = multi.getParameter("email");
-				String photo = "/"+savePath+"/"+multi.getFilesystemName("photoFile");
+				String photo = multi.getFilesystemName("photoFile");
+				
 				
 				// 변수 - vo 저장하고 Service
 				MemberVO vo = new MemberVO();
@@ -177,7 +183,9 @@ public class MemberController {
 				vo.setBirth(birth);
 				vo.setTel(tel);
 				vo.setEmail(email);
-				vo.setPhoto(photo);			
+				if(!(photo != null || photo.equals(""))) {
+					vo.setPhoto("/"+savePath+"/"+photo);					
+				} else vo.setPhoto("/upload/member/noImage.png");
 				Execute.execute(Init.get(uri),vo);
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.				
 				jsp = "redirect:/board/list.do";
