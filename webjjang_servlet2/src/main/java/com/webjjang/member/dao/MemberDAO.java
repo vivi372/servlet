@@ -102,6 +102,39 @@ public class MemberDAO extends DAO{
 		return vo;
 	} // end of view()
 	
+	// 3-1. 아이디 중복 처리
+	// MemberController - (Execute) - MemberCheckIdService - [MemberDAO.checkId()]
+	public String checkId(String id) throws Exception{
+		// 결과(id)를 저장할 수 있는 변수 선언.
+		String result = null;
+		
+		try {
+			// 1. 드라이버 확인 - DB
+			// 2. 연결
+			con = DB.getConnection();
+			// 3. sql - 아래 LIST
+			// 4. 실행 객체 & 데이터 세팅
+			pstmt = con.prepareStatement(CHECK_ID);
+			pstmt.setString(1, id);
+			// 5. 실행
+			rs = pstmt.executeQuery();
+			// 6. 표시 또는 담기
+			if(rs != null && rs.next()) {	
+				//result  : 넘겨 줘야할 id
+				result = rs.getString("id");
+			} // end of if
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			// 7. 닫기
+			DB.close(con, pstmt, rs);
+		} // end of try ~ catch ~ finally
+		
+		// 결과 데이터를 리턴해 준다.
+		return result;
+	} // end of checkId()
+	
 	// 3. 회원가입 처리
 	// MemberController - (Execute) - MemberViewService - [MemberDAO.write()]
 	public int write(MemberVO vo) throws Exception{
@@ -317,6 +350,7 @@ public class MemberDAO extends DAO{
 			+ " m.photo, m.gradeNo, g.gradeName "
 			+ " from member m, grade g "
 			+ " where (id = ?) and (m.gradeNo = g.gradeNo) ";
+	final String CHECK_ID = "select id from member where id=?";
 	final String WRITE = "insert into member "
 			+ " (id, pw, name, gender, birth, tel, email, photo) "
 			+ " values(?, ?, ?, ?, ?, ?, ?, ?)"; 

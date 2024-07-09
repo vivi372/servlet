@@ -1,15 +1,15 @@
 package com.webjjang.member.controller;
 
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.webjjang.board.vo.BoardVO;
 import com.webjjang.main.controller.Init;
 import com.webjjang.member.vo.LoginVO;
+import com.webjjang.member.vo.MemberVO;
 import com.webjjang.util.exe.Execute;
 import com.webjjang.util.page.PageObject;
 import com.webjjang.util.page.ReplyPageObject;
@@ -42,6 +42,15 @@ public class MemberController {
 		Long no = 0L;
 		
 		PreviousUri preUri = new PreviousUri(request);
+		
+		//이미지 파일 저장 위치
+		//파일의 상대적 저장 위치
+		String savePath = "upload/member";
+		//파일 시스템에서는 절대 저장 위치가 필요하다 - 파일 업로드시 필요		
+		String uploadFilePath = request.getServletContext().getRealPath(savePath);		
+		//System.out.println(uploadFilePath);
+		int uploadFileSizeLimit = 100*1024*1024;
+		String encType = "UTF-8";
 		
 		try { // 정상 처리
 		
@@ -136,25 +145,56 @@ public class MemberController {
 				
 				break;		
 			case "/member/writeForm.do":
-				System.out.println("1-1.로그인 폼");
+				System.out.println("3-1.회원가입 폼");
 				
-				jsp = "member/loginForm";			
+				jsp = "member/writeForm";			
 				
 				break;
 			
 			case "/member/write.do":
-				System.out.println("1-2.로그인");				
+				System.out.println("3-2.회원가입 처리");		
 				
-				id = request.getParameter("id");
-				pw = request.getParameter("pw");
+				//이미지 업로드 처리
+				//new MultipartRequest(request, 실제저장위치,사이즈 제한,encoding,중복처리객체);
+				//input name을 다르게 해서 올리세요 file1 , file2
+				MultipartRequest multi = new MultipartRequest(request, uploadFilePath,uploadFileSizeLimit,encType,new DefaultFileRenamePolicy());
 				
-				login =new LoginVO();
-				login.setId(id);
-				login.setPw(pw);				
-				Execute.execute(Init.get(uri),login);
+				id = multi.getParameter("id");
+				pw = multi.getParameter("pw");
+				String name = multi.getParameter("name");
+				String gender = multi.getParameter("gender");
+				String birth = multi.getParameter("birth");
+				String tel = multi.getParameter("tel");
+				String email = multi.getParameter("email");
+				String photo = "/"+savePath+"/"+multi.getFilesystemName("photoFile");
+				
+				// 변수 - vo 저장하고 Service
+				MemberVO vo = new MemberVO();
+				vo.setId(id);
+				vo.setPw(pw);
+				vo.setName(name);
+				vo.setGender(gender);
+				vo.setBirth(birth);
+				vo.setTel(tel);
+				vo.setEmail(email);
+				vo.setPhoto(photo);			
+				Execute.execute(Init.get(uri),vo);
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.				
-				jsp = "redirect:list.do?perPageNum="+request.getParameter("perPageNum");
-				session.setAttribute("msg", "글이 성공적으로 등록되었습니다.");
+				jsp = "redirect:loginForm.do";
+				session.setAttribute("msg", "성공적으로 가입되었습니다.");
+				break;
+			case "/member/checkId.do":
+				System.out.println("3-3. 아이디 체크");				
+				
+				id = request.getParameter("id");				
+				
+							
+				id = (String) Execute.execute(Init.get(uri),id);
+				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.		
+				
+				request.setAttribute("id", id);
+				jsp = "member/checkId";
+				
 				break;
 			case "/member/updateForm.do":
 				System.out.println("4-1 일반게시판 글 수정 폼");

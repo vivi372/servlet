@@ -24,7 +24,9 @@ import com.webjjang.image.service.ImageWriteService;
 import com.webjjang.main.dao.DAO;
 import com.webjjang.main.service.Service;
 import com.webjjang.member.dao.MemberDAO;
+import com.webjjang.member.service.MemberCheckIdService;
 import com.webjjang.member.service.MemberLoginService;
+import com.webjjang.member.service.MemberWriteService;
 
 public class Init {
 	
@@ -55,6 +57,8 @@ public class Init {
 		serviceMap.put("/boardreply/delete.do", new BoardReplyDeleteService());
 		// 회원관리 서비스
 		serviceMap.put("/member/login.do", new MemberLoginService());
+		serviceMap.put("/member/write.do", new MemberWriteService());
+		serviceMap.put("/ajax/checkId.do", new MemberCheckIdService());
 		// 이미지 게시판 서비스
 		serviceMap.put("/image/list.do", new ImageListService());
 		serviceMap.put("/image/view.do", new ImageViewService());
@@ -77,6 +81,8 @@ public class Init {
 		serviceMap.get("/boardreply/delete.do").setDAO(daoMap.get("boardReplyDAO"));
 		// 회원관리 서비스 DAO 조립
 		serviceMap.get("/member/login.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/member/write.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/ajax/checkId.do").setDAO(daoMap.get("memberDAO"));
 		// 이미지 게시판 서비스 DAO 조립
 		serviceMap.get("/image/list.do").setDAO(daoMap.get("imageDAO"));
 		serviceMap.get("/image/view.do").setDAO(daoMap.get("imageDAO"));

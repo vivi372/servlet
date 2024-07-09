@@ -19,7 +19,7 @@
   <!-- Bootstrap 4 + jquery 라이브러리 등록 - CDN 방식 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
@@ -103,7 +103,7 @@
 				      		<b>로그인</b>
 			      		</a>
 			    	</li>
-			    	<li class="nav-item">
+			    	<li ${(uri == '/member/writeForm.do')?"class='nav-item active'":"class='nav-item'"}>
 			      		<a class="nav-link" href="/member/writeForm.do">
 			      			<i class="fa fa-address-card"></i>
 			      			<b>회원가입</b>
@@ -119,6 +119,7 @@
 				<c:if test="${!empty login }">
 					<!-- 로그인을 했을때 -->
 					<li class="nav-item mt-2 mr-1">
+						<img src="${login.photo }" class="rounded-circle" alt="회원 이미지" width="30px" height="30px">
 						<b class="text-secondary">어서오세요 ${login.name }님</b>
 					</li>
 			  		<li class="nav-item">

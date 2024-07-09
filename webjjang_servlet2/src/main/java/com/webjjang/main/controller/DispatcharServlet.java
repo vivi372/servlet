@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.webjjang.ajax.controller.AjaxController;
 import com.webjjang.board.controller.BoardController;
 import com.webjjang.boardreply.controller.BoardReplyController;
 import com.webjjang.image.controller.ImageController;
@@ -28,6 +29,8 @@ public class DispatcharServlet extends HttpServlet {
 	private BoardReplyController boardReplyController = new BoardReplyController();
 	private MemberController memberController = new MemberController();
 	private ImageController imageController = new ImageController();
+	private AjaxController ajaxController = new AjaxController();
+	
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -99,6 +102,10 @@ public class DispatcharServlet extends HttpServlet {
 		case "/member":
 			System.out.println("회원 관리");					
 			jsp = memberController.execute(request);
+			break;
+		case "/ajax":
+			System.out.println("아작스");					
+			jsp = ajaxController.execute(request);
 			break;
 		case "/image":
 			System.out.println("이미지 게시판");		

@@ -12,9 +12,11 @@
 		<pattern>/shop/*</pattern>
 		<pattern>/image/*</pattern>		
 		<pattern>/member/*</pattern>
-	
-
 	</decorator>
+	
+	<excludes>
+		<pattern>/member/checkId.do</pattern>
+	</excludes>
 	
 <!-- 	<decorator name="admin" page="admin_decorator.jsp"> -->
 <!-- 		<pattern>/admin/*</pattern> -->

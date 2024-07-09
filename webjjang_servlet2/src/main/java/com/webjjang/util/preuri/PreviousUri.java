@@ -33,7 +33,7 @@ public class PreviousUri {
 	public String getPreUri() {
 		String preUri = req.getHeader("referer");
 		
-		if(preUri.indexOf("word")>0) {
+		if(preUri.indexOf("word")>=0) {
 			String wordValue = preUri.substring(preUri.indexOf("word")+5,((preUri.indexOf("&",preUri.indexOf("word"))==-1)?preUri.length():preUri.indexOf("&",preUri.indexOf("word"))));
 			
 			try {
