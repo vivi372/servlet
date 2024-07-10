@@ -69,6 +69,12 @@ public class DispatcharServlet extends HttpServlet {
 		String uri = request.getRequestURI();
 		System.out.println("DispatcharServlet - uri = "+uri);
 		
+		//메인처리 - localhost -> localhost/main.do -> /main/main.do
+		if(uri.equals("/") || uri.equals("/main.do")) {
+			response.sendRedirect("/main/main.do");
+			return;
+		}
+		
 		//uri = /module/기능 -> /board/list.do
 		int pos = uri.indexOf("/",1);
 		

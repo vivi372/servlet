@@ -21,6 +21,7 @@ import com.webjjang.util.preuri.PreviousUri;
 public class MemberController {
 
 	
+	@SuppressWarnings("null")
 	public String execute(HttpServletRequest request) {
 		System.out.println("MemberController.execute()");
 		
@@ -109,13 +110,15 @@ public class MemberController {
 				jsp = "redirect:"+preUri.getPreUri();			
 				session.setAttribute("msg", "성공적으로 로그아웃되었습니다.");
 				break;
-			case "/member/list.do":
-				// [BoardController] - (Execute) - BoardListService - BoardDAO.list()
-				System.out.println("1.일반게시판 리스트");
+			case "/member/list.do": //관리자만 가능하다.
+				// [MemberController] - (Execute) - MemberListService - MemberDAO.list()
+				System.out.println("1.회원 리스트");
 				//페이지 처리를 위한 객체
 				//getInstance - 기본 값이 있고 넘어오는 페이지와 검색 정보를 세팅 처리
-				PageObject pageObject = PageObject.getInstance(request);				
-				// DB에서 데이터 가져오기 - 가져온 데이터는 List<BoardVO>				
+				PageObject pageObject = PageObject.getInstance(request);
+				//id 세팅 - 관지자 계정은 제외시키기 위해서 => accepter
+				pageObject.setAccepter(id);
+				// DB에서 데이터 가져오기 - 가져온 데이터는 List<MemberVO>				
 				// 가져온 데이터 저장 - request에 저장 -> jsp까지 전달
 				request.setAttribute("list", Execute.execute(Init.get(uri), pageObject));	
 				// pageObject 담기
@@ -123,9 +126,9 @@ public class MemberController {
 				
 				
 				//페이지 오브젝트 데이터 확인
-				System.out.println("BoardController.execute().pageObject - "+pageObject);
-				// /WEB-INF/views/  + board/list + .jsp
-				jsp = "board/list";
+				//System.out.println("MemberController.execute().pageObject - "+pageObject);
+				// /WEB-INF/views/  + member/list + .jsp
+				jsp = "member/list";
 				
 				break;			
 			case "/member/view.do":
@@ -191,17 +194,43 @@ public class MemberController {
 				jsp = "redirect:/board/list.do";
 				session.setAttribute("msg", "성공적으로 가입되었습니다.");
 				break;
-			case "/member/checkId.do":
-				System.out.println("3-3. 아이디 체크");				
+			case "/member/changeGrade.do":
+				System.out.println("4-ex. 등급 변경");				
 				
 				id = request.getParameter("id");				
+				int gradeNo = Integer.parseInt(request.getParameter("gradeNo"));
 				
+				vo = new MemberVO();
+				vo.setId(id);
+				vo.setGradeNo(gradeNo);
 							
-				id = (String) Execute.execute(Init.get(uri),id);
-				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.		
+				Execute.execute(Init.get(uri),vo);
 				
-				request.setAttribute("id", id);
-				jsp = "member/checkId";
+				session.setAttribute("msg", "회원 "+id+"님의 등급이 "+((gradeNo==1)?"일반회원으로":"관리자로")+" 성공적으로 수정되었습니다.");
+				
+				pageObject = PageObject.getInstance(request);
+				
+				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.		
+				jsp = "redirect:/member/list.do?"+pageObject.getPageQuery();
+				
+				break;
+			case "/member/changeStatus.do":
+				System.out.println("4-ex. 상태 변경");				
+				
+				id = request.getParameter("id");				
+				String status = request.getParameter("status");
+				
+				vo = new MemberVO();
+				vo.setId(id);
+				vo.setStatus(status);
+							
+				Execute.execute(Init.get(uri),vo);
+				
+				session.setAttribute("msg", "회원 "+id+"님의 상태가 "+status+"(으)로 성공적으로 수정되었습니다.");
+				
+				pageObject = PageObject.getInstance(request);
+				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.		
+				jsp = "redirect:/member/list.do?"+pageObject.getPageQuery();
 				
 				break;
 			case "/member/updateForm.do":

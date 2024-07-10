@@ -91,6 +91,12 @@
 		    	<li ${(module == '/board')?"class='nav-item active'":"class='nav-item'"}>
 		      		<a class="nav-link" href="/board/list.do">일반 게시판</a>
 		    	</li>
+		    	<c:if test="${!empty login && login.gradeNo==9 }">
+			    	<!-- 관리자 메뉴 -->
+			    	<li ${(uri == '/member/list.do')?"class='nav-item active'":"class='nav-item'"}>
+			      		<a class="nav-link" href="/member/list.do">회원관리</a>
+			    	</li>		    	
+		    	</c:if>
 		  	</ul>
   			
  	 		

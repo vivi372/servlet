@@ -170,12 +170,12 @@
 			<div class="form-group">
 				<label for="photoFile">사진 첨부 : </label><br>
 					<input class="btn" type="file" id="photoFile" name="photoFile">
-			</div>		
-			
+			</div>				
+		
 			
 			<input name="perPageNum" value="${param.perPageNum }" type="hidden">
 			
-			<div class="btn-group">
+			<div class="btn-group mt-3">
 				<!-- 등록 버튼을 클릭하면 1. click-btn 2.submit-form 이벤트로 처리 가능하다. -->
 	  			<button type="submit" class="btn btn-dark" id="writeBtn">회원가입</button>
 	 			<button type="reset" class="btn btn-light">초기화</button>

@@ -6,6 +6,7 @@ import com.webjjang.main.dao.DAO;
 import com.webjjang.member.vo.LoginVO;
 import com.webjjang.member.vo.MemberVO;
 import com.webjjang.util.db.DB;
+import com.webjjang.util.page.PageObject;
 
 public class MemberDAO extends DAO{
 
@@ -14,7 +15,7 @@ public class MemberDAO extends DAO{
 	
 	// 1. 회원 리스트 처리
 	// MemberController - (Execute) - MemberListService - [MemberDAO.list()]
-	public List<MemberVO> list() throws Exception{
+	public List<MemberVO> list(PageObject pageObj) throws Exception{
 		// 결과를 저장할 수 있는 변수 선언.
 		List<MemberVO> list = null;
 		
@@ -23,21 +24,28 @@ public class MemberDAO extends DAO{
 			// 2. 연결
 			con = DB.getConnection();
 			// 3. sql - 아래 LIST
+			System.out.println(getListSql(pageObj));
 			// 4. 실행 객체 & 데이터 세팅
-			pstmt = con.prepareStatement(LIST);
+			pstmt = con.prepareStatement(getListSql(pageObj));
+			pstmt.setString(1, pageObj.getAccepter());
+			pstmt.setLong(2, pageObj.getStartRow());
+			pstmt.setLong(3, pageObj.getEndRow());
 			// 5. 실행
 			rs = pstmt.executeQuery();
 			// 6. 표시 또는 담기
 			if(rs != null) {
+				// rs - > vo -> list
+				// list가 null이면 생성해서 저장할 수 있게 해줘야 한다.
+				if(list == null) list = new ArrayList<>();
 				while(rs.next()) {
-					// rs - > vo -> list
-					// list가 null이면 생성해서 저장할 수 있게 해줘야 한다.
-					if(list == null) list = new ArrayList<>();
 					// rs -> vo
 					MemberVO vo = new MemberVO();
 					vo.setId(rs.getString("id"));
 					vo.setName(rs.getString("name"));
 					vo.setBirth(rs.getString("birth"));
+					vo.setGender(rs.getString("gender"));
+					vo.setPhoto(rs.getString("photo"));
+					vo.setEmail(rs.getString("email"));
 					vo.setTel(rs.getString("tel"));
 					vo.setGradeNo(rs.getInt("gradeNo"));
 					vo.setGradeName(rs.getString("gradeName"));
@@ -58,6 +66,39 @@ public class MemberDAO extends DAO{
 		// 결과 데이터를 리턴해 준다.
 		return list;
 	} // end of list()
+	
+	// 2. 회원정보보기 처리
+		// MemberController - (Execute) - MemberListService - [MemberDAO.totalRow()]
+		public long totalRow(PageObject pageObj) throws Exception{
+			// 결과를 저장할 수 있는 변수 선언.
+			long result = 0L;
+			try {
+				// 1. 드라이버 확인 - DB
+				// 2. 연결
+				con = DB.getConnection();
+				// 3. sql - 아래 VIEW
+				System.out.println(getTotalRowSql(pageObj));
+				// 4. 실행 객체 & 데이터 세팅
+				pstmt = con.prepareStatement(getTotalRowSql(pageObj));
+				pstmt.setString(1, pageObj.getAccepter());
+				//pstmt.setString(1, id);
+				// 5. 실행
+				rs = pstmt.executeQuery();
+				// 6. 표시 또는 담기
+				if(rs != null && rs.next()) {
+					result = rs.getLong(1);
+				} // end of if
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				// 7. 닫기
+				DB.close(con, pstmt, rs);
+			} // end of try ~ catch ~ finally
+
+			// 결과 데이터를 리턴해 준다.
+			return result;
+		} // end of totalRow()
 	
 	// 2. 회원정보보기 처리
 	// MemberController - (Execute) - MemberListService - [MemberDAO.view()]
@@ -218,6 +259,80 @@ public class MemberDAO extends DAO{
 	} // end of update()
 	
 	
+	// 4-ex. 회원정보 수정 처리
+	// MemberController - (Execute) - MemberChangeGradeService - [MemberDAO.changeGrade()]
+	public int changeGrade(MemberVO vo) throws Exception{
+		// 결과를 저장할 수 있는 변수 선언.
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DB
+			// 2. 연결
+			con = DB.getConnection();
+			// 3. sql - 아래 UPDATE
+			// 4. 실행 객체 & 데이터 세팅
+			pstmt = con.prepareStatement(CHANGEGRADE);
+			pstmt.setLong(1, vo.getGradeNo());
+			pstmt.setString(2, vo.getId());
+			
+			// 5. 실행 - update : executeUpdate() -> int 결과가 나옴.
+			result = pstmt.executeUpdate();
+			// 6. 표시 또는 담기
+			if(result == 0) { // 글번호가 존재하지 않는다. -> 예외로 처리한다.
+				throw new Exception("예외 발생 : 아이디나 등급번호가 맞지 않습니다. 정보를 확인해 주세요.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 특별한 예외는 그냥 전달한다.
+			if(e.getMessage().indexOf("예외 발생") >= 0) throw e;
+			// 그외 처리 중 나타나는 오류에 대해서 사용자가 볼수 있는 예외로 만들어 전달한다.
+			else throw new Exception("예외 발생 : 회원 등급 수정 DB 처리 중 예외가 발생했습니다.");
+		} finally {
+			// 7. 닫기
+			DB.close(con, pstmt);
+		}
+		
+		// 결과 데이터를 리턴해 준다.
+		return result;
+	} // end of changeGrade()
+	
+	// 4-ex. 회원정보 수정 처리
+	// MemberController - (Execute) - MemberChangeStatusService - [MemberDAO.changeStatus()]
+	public int changeStatus(MemberVO vo) throws Exception{
+		// 결과를 저장할 수 있는 변수 선언.
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DB
+			// 2. 연결
+			con = DB.getConnection();
+			// 3. sql - 아래 UPDATE
+			// 4. 실행 객체 & 데이터 세팅
+			pstmt = con.prepareStatement(CHANGESTATUS);
+			pstmt.setString(1, vo.getStatus());
+			pstmt.setString(2, vo.getId());
+			
+			// 5. 실행 - update : executeUpdate() -> int 결과가 나옴.
+			result = pstmt.executeUpdate();
+			// 6. 표시 또는 담기
+			if(result == 0) { // 글번호가 존재하지 않는다. -> 예외로 처리한다.
+				throw new Exception("예외 발생 : 아이디나 상태가 맞지 않습니다. 정보를 확인해 주세요.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 특별한 예외는 그냥 전달한다.
+			if(e.getMessage().indexOf("예외 발생") >= 0) throw e;
+			// 그외 처리 중 나타나는 오류에 대해서 사용자가 볼수 있는 예외로 만들어 전달한다.
+			else throw new Exception("예외 발생 : 회원 상태 수정 DB 처리 중 예외가 발생했습니다.");
+		} finally {
+			// 7. 닫기
+			DB.close(con, pstmt);
+		}
+		
+		// 결과 데이터를 리턴해 준다.
+		return result;
+	} // end of changeStatus()
+	
 	// 5. 회원탈퇴 처리 : 상태 - 탈퇴로 변경
 	// MemberController - (Execute) - MemberDeleteService - [NMemberDAO.delete()]
 	public int delete(MemberVO vo) throws Exception{
@@ -336,13 +451,43 @@ public class MemberDAO extends DAO{
 	} // end of update()
 	
 
-	// 실행할 쿼리를 정의해 놓은 변수 선언.
-	final String LIST = "select m.id, m.name, "
-			+ " to_char(m.birth, 'yyyy-mm-dd') birth, m.tel, "
-			+ " m.gradeNo, g.gradeName, m.status "
-			+ " from member m, grade g "
-			+ " where m.gradeNo = g.gradeNo "
-			+ " order by id asc"; 
+	// 실행할 쿼리를 정의해 놓은 변수 선언.	
+	private String getListSql(PageObject pageObj) {
+		String listSql = "select id, name, birth, tel, gender, photo,email, gradeNo, gradeName, status from( " 
+				+ " select rownum rnum , id, name, birth, tel, gender, photo,email , gradeNo, gradeName, status from( "
+				+ " select m.id, m.name, "
+				+ " to_char(m.birth, 'yyyy-mm-dd') birth, m.tel, m.gender, m.photo,m.email, "
+				+ " m.gradeNo, g.gradeName, m.status "
+				+ " from member m, grade g "
+				+ " where (not id=?) "+getSearch(pageObj)
+				+ "  and (m.gradeNo = g.gradeNo) "
+				+ " order by id asc )) where rnum between ? and ?";
+		
+		return listSql;
+	}
+	private String getTotalRowSql(PageObject pageObj) {
+		String totalRowSql = "select count(*) from member where (not id = ?) "+getSearch(pageObj);
+		
+		return totalRowSql;
+		
+	}
+	
+	private String getSearch(PageObject pageObj) {
+		String searchSql = "";
+		String word = pageObj.getWord();
+		if(word != null && !word.equals("")) {
+			String key = pageObj.getKey();
+			searchSql += " and ( 1=0";			
+			if(key.indexOf("i") >= 0) searchSql += " or id like '%"+word+"%'";
+			if(key.indexOf("t") >= 0) searchSql += " or tel like '%"+word+"%'";
+			if(key.indexOf("n") >= 0) searchSql += " or name like '%"+word+"%'";
+			searchSql+=") ";
+		}
+		return searchSql;
+	}
+	
+	final String CHANGEGRADE = "update member set gradeNo = ? where id=?";
+	final String CHANGESTATUS = "update member set status = ? where id=?";
 	final String VIEW= "select m.id, m.name, gender, "
 			+ " to_char(m.birth, 'yyyy-mm-dd') birth, m.tel, "
 			+ " email,  to_char(m.regDate, 'yyyy-mm-dd') regDate, "
