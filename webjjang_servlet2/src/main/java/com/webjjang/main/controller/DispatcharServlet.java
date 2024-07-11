@@ -26,6 +26,7 @@ public class DispatcharServlet extends HttpServlet {
 	
 	// Controller 생성과 선언 - 한번만 실행
 	private BoardController boardController = new BoardController();
+	private MainController mainController = new MainController();
 	private BoardReplyController boardReplyController = new BoardReplyController();
 	private MemberController memberController = new MemberController();
 	private ImageController imageController = new ImageController();
@@ -93,6 +94,12 @@ public class DispatcharServlet extends HttpServlet {
 		request.setAttribute("module", module);
 		request.setAttribute("uri", uri);
 		switch (module) {
+		case "/main":
+			System.out.println("메인 게시판");
+			
+			jsp = mainController.execute(request);			
+					
+			break;
 		case "/board":
 			System.out.println("일반 게시판");
 			

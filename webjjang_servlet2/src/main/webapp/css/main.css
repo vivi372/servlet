@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+.boardLink:hover {
+	background: #e0e0e0;
+	cursor: pointer;
+}
+
+.imageLink:hover {
+	opacity: 70%;
+	cursor: pointer;
+}
+
