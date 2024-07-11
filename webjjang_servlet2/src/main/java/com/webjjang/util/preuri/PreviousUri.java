@@ -1,8 +1,13 @@
 package com.webjjang.util.preuri;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,20 +18,24 @@ public class PreviousUri {
 		req = request;
 	}
 	
-	public String getNextUri() {
+	public String getNextUri() throws Exception {
 		Enumeration<String> params = req.getParameterNames();
 		String uri = req.getRequestURI();
 		String param = "?";
 		while (params.hasMoreElements()) {
-			String name = (String) params.nextElement();
-			String value = req.getParameter(name);
-			try {
-				param += name+"="+((name.equals("word")&&value!=null)?URLEncoder.encode(value, "utf-8"):value)+"&";				
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
+			String key = (String) params.nextElement();
+			String value = req.getParameter(key);
+			if(value != null) {
+            	value = URLDecoder.decode(value,"utf-8");                	
+            }
+            System.out.println("getNextUri="+value);
+            if(checkKor(value)) {
+            	System.out.println("한글");
+            	value = URLEncoder.encode(value,"utf-8");
+            }			
+			param += key+"="+value+"&";			
 		}
-		System.out.println(uri);
+		System.out.println("getNextUri-"+param);
 		if(param.equals("?")) {
 			uri += " ";
 		}else {
@@ -36,20 +45,77 @@ public class PreviousUri {
 		return uri;
 	}
 	
-	public String getPreUri() {
-		String preUri = req.getHeader("referer");
+	public String getPreUri() throws Exception {
+		String refererUrl = req.getHeader("referer");
 		
-		if(preUri.indexOf("word")>=0) {
-			String wordValue = preUri.substring(preUri.indexOf("word")+5,((preUri.indexOf("&",preUri.indexOf("word"))==-1)?preUri.length():preUri.indexOf("&",preUri.indexOf("word"))));
-			
-			try {
-				String encodingValue = URLEncoder.encode(URLDecoder.decode(wordValue,"utf-8"),"utf-8");
-				preUri = preUri.replace(wordValue,encodingValue);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		URL url = new URL(refererUrl);
 		
-		return preUri;
+		
+		String refererUri =  refererUrl.substring("http://localhost".length(),((refererUrl.indexOf("?")>=0)?refererUrl.indexOf("?")+1:refererUrl.length()));
+		System.out.println("getPreUri - refererUri="+refererUri);
+		String query = url.getQuery();
+		query = MapToQueryString(extractParameters(query));
+		System.out.println("getPreUri - query="+query);
+		return refererUri+query;
 	}
+	
+	private static Map<String, String> extractParameters(String query) throws UnsupportedEncodingException {      
+        Map<String, String> params = new HashMap<>();           
+            
+        if (query != null) {
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                String key = idx > 0 ? pair.substring(0, idx) : pair;
+                String value = idx > 0 && pair.length() > idx + 1 ? pair.substring(idx + 1) : null;
+                if(value != null) {
+                	value = URLDecoder.decode(value,"utf-8");                	
+                }
+                System.out.println("extractParameters="+value);
+                if(checkKor(value)) {
+                	System.out.println("한글");
+                	value = URLEncoder.encode(value,"utf-8");
+                }
+                params.put(key, value);
+            }
+        } 
+        
+        return params;
+    }
+	
+	 private static boolean checkKor(String input) {
+	        if (input == null || input.isEmpty()) {
+	            return false;
+	        }
+
+	        for (char c : input.toCharArray()) {
+	            if (Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HANGUL_SYLLABLES ||
+	                Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HANGUL_JAMO ||
+	                Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO) {	            	
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    }
+	 
+	 private static String MapToQueryString(Map<String, String> params) {
+	        if (params == null || params.isEmpty()) {
+	            return "";
+	        }
+
+	        StringJoiner queryString = new StringJoiner("&");
+	        for (Map.Entry<String, String> entry : params.entrySet()) {
+	            String key = entry.getKey();
+	            String value = entry.getValue();
+	            if (value != null) {
+	                queryString.add(key + "=" + value);
+	            } else {
+	                queryString.add(key+"=");
+	            }
+	        }
+
+	        return queryString.toString();
+	    }
+	
 }

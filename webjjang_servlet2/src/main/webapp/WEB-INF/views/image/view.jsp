@@ -18,24 +18,7 @@
 <script type="text/javascript">
 	$(function() {		
 		//이벤트 처리
-		//메인 삭제 버튼 클릭
-		$("#deleteBtn").click(function() {			
-			//$("#deleteDiv").show();
-			//$("#pw").val("");
-			$("#deleteModal").modal("show");
-			$("#deleteBtn").attr("disabled",true);
-		});	
 		
-		$('#deleteModal').on('hidden.bs.modal', function () {
-			console.log("btn-form-cancel");
-			$("#pw").val("");
-			$("#deleteBtn").attr("disabled",false);
-		});	
-		
-		$('#changeImageModal').on('hidden.bs.modal', function () {			
-			$("#imageFile").val("");
-			
-		});	
 		
 		
 		$('[data-toggle="tooltip"]').tooltip();   		

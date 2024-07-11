@@ -12,6 +12,7 @@ import com.webjjang.board.controller.BoardController;
 import com.webjjang.boardreply.controller.BoardReplyController;
 import com.webjjang.image.controller.ImageController;
 import com.webjjang.member.controller.MemberController;
+import com.webjjang.notice.controller.NoticeController;
 
 
 /**
@@ -30,6 +31,7 @@ public class DispatcharServlet extends HttpServlet {
 	private BoardReplyController boardReplyController = new BoardReplyController();
 	private MemberController memberController = new MemberController();
 	private ImageController imageController = new ImageController();
+	private NoticeController noticeController = new NoticeController();
 	private AjaxController ajaxController = new AjaxController();
 	
        
@@ -124,6 +126,11 @@ public class DispatcharServlet extends HttpServlet {
 			System.out.println("이미지 게시판");		
 			
 			jsp = imageController.execute(request);
+			break;
+		case "/notice":
+			System.out.println("공지사항");		
+			
+			jsp = noticeController.execute(request);
 			break;
 		default:
 			request.setAttribute("uri", uri);

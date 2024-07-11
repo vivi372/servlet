@@ -1,9 +1,9 @@
 package com.webjjang.main.controller;
 
 
-import com.webjjang.member.controller.MemberController;
+
 import com.webjjang.member.vo.LoginVO;
-import com.webjjang.notice.controller.NoticeController;
+
 import com.webjjang.util.io.In;
 
 public class Main {
@@ -57,7 +57,7 @@ public class Main {
 			case "1": 
 				System.out.println("1. 공지사항");
 				// 생성하고 호출한다.
-				new NoticeController().execute();
+//				new NoticeController().execute();
 				break;
 			case "2": 
 				System.out.println("2. 쇼핑몰");

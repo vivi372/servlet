@@ -2,15 +2,8 @@ package com.webjjang.ajax.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import com.webjjang.board.vo.BoardVO;
 import com.webjjang.main.controller.Init;
-import com.webjjang.member.vo.LoginVO;
 import com.webjjang.util.exe.Execute;
-import com.webjjang.util.page.PageObject;
-import com.webjjang.util.page.ReplyPageObject;
-import com.webjjang.util.preuri.PreviousUri;
 
 //Member Module 에 맞는 메뉴 선택 , 데이터 수집(기능별), 예외 처리
 public class AjaxController {

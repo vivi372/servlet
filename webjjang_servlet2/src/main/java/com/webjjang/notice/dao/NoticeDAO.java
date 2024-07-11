@@ -6,6 +6,7 @@ import java.util.List;
 import com.webjjang.notice.vo.NoticeVO;
 import com.webjjang.main.dao.DAO;
 import com.webjjang.util.db.DB;
+import com.webjjang.util.page.PageObject;
 
 public class NoticeDAO extends DAO{
 
@@ -14,7 +15,7 @@ public class NoticeDAO extends DAO{
 	
 	// 1. 리스트 처리
 	// NoticeController - (Execute) - NoticeListService - [NoticeDAO.list()]
-	public List<NoticeVO> list() throws Exception{
+	public List<NoticeVO> list(PageObject pageObj) throws Exception{
 		// 결과를 저장할 수 있는 변수 선언.
 		List<NoticeVO> list = null;
 		
@@ -23,8 +24,12 @@ public class NoticeDAO extends DAO{
 			// 2. 연결
 			con = DB.getConnection();
 			// 3. sql - 아래 LIST
+			System.out.println(getListSql(pageObj));
 			// 4. 실행 객체 & 데이터 세팅
-			pstmt = con.prepareStatement(LIST);
+			pstmt = con.prepareStatement(getListSql(pageObj));
+			pstmt.setLong(1, pageObj.getStartRow());
+			pstmt.setLong(2, pageObj.getEndRow());
+		
 			// 5. 실행
 			rs = pstmt.executeQuery();
 			// 6. 표시 또는 담기
@@ -56,6 +61,36 @@ public class NoticeDAO extends DAO{
 		// 결과 데이터를 리턴해 준다.
 		return list;
 	} // end of list()
+	
+	// 2. 글보기 처리
+	// NoticeController - (Execute) - NoticeListService - [NoticeDAO.totalRow()]
+	public long totalRow(PageObject pageObj) throws Exception{
+		// 결과를 저장할 수 있는 변수 선언.
+		long result = 0L;
+		try {
+			// 1. 드라이버 확인 - DB
+			// 2. 연결
+			con = DB.getConnection();
+			// 3. sql - 아래 LIST
+			// 4. 실행 객체 & 데이터 세팅
+			pstmt = con.prepareStatement(TOTALROW+getSearch(pageObj));			
+			// 5. 실행
+			rs = pstmt.executeQuery();
+			// 6. 표시 또는 담기
+			if(rs != null && rs.next()) {				
+				rs.getLong(1);				
+			} // end of if
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			// 7. 닫기
+			DB.close(con, pstmt, rs);
+		} // end of try ~ catch ~ finally
+
+		// 결과 데이터를 리턴해 준다.
+		return result;
+	} // end of totalRow()
 	
 	// 2. 글보기 처리
 	// NoticeController - (Execute) - NoticeListService - [NoticeDAO.view()]
@@ -149,7 +184,8 @@ public class NoticeDAO extends DAO{
 			pstmt.setString(2, vo.getContent());
 			pstmt.setString(3, vo.getStartDate());
 			pstmt.setString(4, vo.getEndDate());
-			pstmt.setLong(5, vo.getNo());
+			pstmt.setString(5, vo.getUpdateDate());
+			pstmt.setLong(6, vo.getNo());
 			// 5. 실행 - update : executeUpdate() -> int 결과가 나옴.
 			result = pstmt.executeUpdate();
 			// 6. 표시 또는 담기
@@ -209,16 +245,38 @@ public class NoticeDAO extends DAO{
 	
 	
 	// 실행할 쿼리를 정의해 놓은 변수 선언.
-	final String LIST = "select no, title, "
-			+ " to_char(startDate, 'yyyy-mm-dd') startDate, "
-			+ " to_char(endDate, 'yyyy-mm-dd') endDate, "
-			+ " to_char(updateDate, 'yyyy-mm-dd') updateDate "
-			+ " from notice "
-			+ " order by updateDate desc, no desc"; 
+	private String getListSql(PageObject pageObj) {
+		String list = "select no, title, startDate, endDate, updateDate from( "
+					+ " select rownum rnum, no, title, startDate, endDate, updateDate from( "
+					+ " select no, title, "
+					+ " to_char(startDate, 'yyyy-mm-dd') startDate, "
+					+ " to_char(endDate, 'yyyy-mm-dd') endDate, "
+					+ " to_char(updateDate, 'yyyy-mm-dd') updateDate "
+					+ " from notice "+getSearch(pageObj)
+					+ " order by updateDate desc, no desc))"
+					+ " where rnum between ? and ?";
+		return list;
+	}
+	
+	final String TOTALROW = "select count(*) from notice "; 
+	
+	private String getSearch(PageObject pageObj) {
+		String searchSql = "where 1=1 ";
+		String word = pageObj.getWord();
+		if(word != null && !word.equals("")) {
+			String key = pageObj.getKey();
+			searchSql += " and ( 1=0";			
+			if(key.indexOf("t") >= 0) searchSql += " or title like '%"+word+"%'";
+			if(key.indexOf("c") >= 0) searchSql += " or content like '%"+word+"%'";			
+			searchSql+=") ";
+		}
+		return searchSql;
+	}
+	
 	final String VIEW= "select no, title, content, "
 			+ " to_char(startDate, 'yyyy-mm-dd') startDate, "
 			+ " to_char(endDate, 'yyyy-mm-dd') endDate, "
-			+ " to_char(updateDate, 'yyyy-mm-dd') writeDate, "
+			+ " to_char(writeDate, 'yyyy-mm-dd') writeDate, "
 			+ " to_char(updateDate, 'yyyy-mm-dd') updateDate "
 			+ " from notice "
 			+ " where no = ?";
@@ -226,7 +284,7 @@ public class NoticeDAO extends DAO{
 			+ " (no, title, content, startDate, endDate) "
 			+ " values(notice_seq.nextval, ?, ?, ?, ?)"; 
 	final String UPDATE= "update notice "
-			+ " set title = ?, content = ?, startDate = ?, endDate = ? "
+			+ " set title = ?, content = ?, startDate = ?, endDate = ?, updateDate = ? "
 			+ " where no = ?"; 
 	final String DELETE= "delete from notice "
 			+ " where no = ?"; 

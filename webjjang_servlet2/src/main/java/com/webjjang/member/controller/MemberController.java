@@ -70,12 +70,16 @@ public class MemberController {
 				//이전 페이지 주소 저장
 				String upcomingUri = (String) session.getAttribute("upcomingUri");
 				
-				if(session.getAttribute("upcomingUri") != null) {
-					session.setAttribute("preUri", upcomingUri);
-					session.removeAttribute("upcomingUri");					
-				} else {					
-					session.setAttribute("preUri", preUri.getPreUri());						
-				}
+				if(session.getAttribute("loginFail") == null ||!session.getAttribute("loginFail").equals("true")) {
+					if(session.getAttribute("upcomingUri") != null) {
+						session.setAttribute("preUri", upcomingUri);
+						session.removeAttribute("upcomingUri");					
+					} else {					
+						session.setAttribute("preUri", preUri.getPreUri());						
+					}
+					
+				} 
+				
 				
 				System.out.println("loginForm-perUri : "+session.getAttribute("preUri"));
 				
@@ -90,11 +94,14 @@ public class MemberController {
 				loginVO.setId(id);
 				loginVO.setPw(pw);
 				try {
-					session.setAttribute("login", Execute.execute(Init.get(uri),loginVO));					
+					session.setAttribute("login", Execute.execute(Init.get(uri),loginVO));
+					session.removeAttribute("loginFail");
 				} catch (Exception e) {
 					session.setAttribute("msg", "존재하지 않는 아이디거나 비밀번호가 다릅니다.");
+					session.setAttribute("loginFail", "true");
 					return "redirect:/member/loginForm.do";
 				}
+				
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.		
 				//원래는 main이나 진행하려고 했던 uri로 이동시킨다.
 				jsp = "redirect:"+session.getAttribute("preUri");
@@ -298,7 +305,7 @@ public class MemberController {
 			} // end of switch
 		} catch (Exception e) {
 			
-			// e.printStackTrace();
+			e.printStackTrace();
 			//예외객체를 jsp에서 사용하기 위해 request에 담는다.
 			request.setAttribute("e", e);
 			
