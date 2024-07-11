@@ -1,10 +1,8 @@
 package com.webjjang.util.exe;
 
 import java.util.Arrays;
-
-import com.webjjang.main.controller.Main;
 import com.webjjang.main.service.Service;
-import com.webjjang.member.service.MemberConUpdateService;
+
 
 
 
@@ -49,9 +47,9 @@ public class Execute {
 		System.out.println("-------------------------------------------------------");
 		
 		// 최근 접속일 수정 - 로그인이 되어 있는 경우만
-		if(Main.login != null) {
-			new MemberConUpdateService().service(Main.login.getId());
-		}
+//		if(Main.login != null) {
+//			new MemberConUpdateService().service(Main.login.getId());
+//		}
 		
 		// 처리된 결과를 리턴한다.
 		return result;
