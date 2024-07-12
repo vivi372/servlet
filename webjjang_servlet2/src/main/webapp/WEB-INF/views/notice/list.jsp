@@ -39,6 +39,13 @@
   background-color: #222; 
   border-color: #444;
 }
+.custom-control-label:hover{
+	cursor: pointer;
+}
+.custom-radio .custom-control-input:checked~.custom-control-label::before{
+ 	background-color: black;
+    border-color: black;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -64,6 +71,40 @@
 		$("#perPageNum").val("${(empty pageObject.perPageNum)?'10':pageObject.perPageNum}");
 		$("#word").val("${pageObject.word}");
 		$("#perPageNum").val("${pageObject.perPageNum}");	
+		
+		
+		$(".noticeOpt").change(function() {
+			//alert("라디오버튼 클릭");
+			if(this.optList[0].checked) {
+				//alert("현재공지");	
+				location = "/notice/list.do?period=pre";
+			}
+			else if(this.optList[1].checked) {
+				//alert("이전공지");	
+				location = "/notice/list.do?period=old";
+			}
+			else if(this.optList[2].checked) {
+				//alert("예정공지");	
+				location = "/notice/list.do?period=res";
+			}
+			else if(this.optList[3].checked) {
+				//alert("모든공지");	
+				location = "/notice/list.do?period=all";
+			}
+			
+// 			$(this).attr("action","/notice/list.do");
+// 			$(this).submit();
+		});
+		
+		if(${param.period == "pre"}){
+			$("#pre").attr("checked","true");
+		} else if(${param.period == "old"}){
+			$("#old").attr("checked","true");
+		} else if(${param.period == "res"}){
+			$("#res").attr("checked","true");
+		} else {
+			$("#all").attr("checked","true");
+		} 
 		
 		
 		
@@ -112,6 +153,26 @@
 			</div>	<!-- col-4 end : 한 페이지당 페이지 수 -->	
 		</div>
 	</form>	
+	<c:if test="${!empty login && login.gradeNo==9 }">	
+		<form class="noticeOpt mb-3">									
+			<div class="custom-control custom-radio custom-control-inline">
+		    	<input type="radio" class="custom-control-input" id="pre" name="optList" value="pre">
+		    	<label class="custom-control-label" for="pre">현재 공지</label>
+		  	</div>
+		  	<div class="custom-control custom-radio custom-control-inline">
+		    	<input type="radio" class="custom-control-input" id="old" name="optList" value="old">
+		    	<label class="custom-control-label" for="old">이전 공지</label>
+		  	</div>
+		  	<div class="custom-control custom-radio custom-control-inline">
+		    	<input type="radio" class="custom-control-input" id="res" name="optList" value="res">
+		    	<label class="custom-control-label" for="res">예정 공지</label>
+		  	</div>
+		  	<div class="custom-control custom-radio custom-control-inline">
+		    	<input type="radio" class="custom-control-input" id="all" name="optList" value="all">
+		    	<label class="custom-control-label" for="all">모든 공지</label>
+		  	</div>					  		
+		</form>				
+	</c:if>
 	<div class="table-responsive-lg">
 	<table class="table">		
 		<tr>			
@@ -130,12 +191,15 @@
 			<td>${vo.updateDate}</td>
 		</tr>
 		</c:forEach>		
+		<c:if test="${!empty login && login.gradeNo==9 }">
+			<tr>
+				<td colspan="5">
+					<a href="/notice/writeForm.do?${pageObject.getPageQuery()}"><button class="btn btn-dark">글 등록</button></a>
+				</td>				
+			</tr>
+			
+		</c:if>
 		
-		<tr>
-			<td colspan="5">
-				<a href="/notice/writeForm.do?${pageObject.getPageQuery()}"><button class="btn btn-dark">글 등록</button></a>
-			</td>
-		</tr>
 	</table>
 	<div class="pagination justify-content-center">
 		<pageNav:pageNav listURI="list.do" pageObject="${pageObject }"></pageNav:pageNav>			

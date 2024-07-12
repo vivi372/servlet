@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-.boardLink:hover {
+.boardLink:hover,.noticeLink:hover {
 	background: #e0e0e0;
 	cursor: pointer;
 }

@@ -263,6 +263,15 @@ public class NoticeDAO extends DAO{
 	private String getSearch(PageObject pageObj) {
 		String searchSql = "where 1=1 ";
 		String word = pageObj.getWord();
+		if(pageObj.getPeriod().equals("pre")) {
+			searchSql += " and (startDate <= sysDate) and (endDate >= sysDate) ";
+		}
+		if(pageObj.getPeriod().equals("old")) {
+			searchSql += " and (endDate < sysDate) ";
+		}
+		if(pageObj.getPeriod().equals("res")) {
+			searchSql += " and (startDate > sysDate) ";
+		}		
 		if(word != null && !word.equals("")) {
 			String key = pageObj.getKey();
 			searchSql += " and ( 1=0";			
@@ -272,6 +281,7 @@ public class NoticeDAO extends DAO{
 		}
 		return searchSql;
 	}
+	
 	
 	final String VIEW= "select no, title, content, "
 			+ " to_char(startDate, 'yyyy-mm-dd') startDate, "

@@ -12,7 +12,11 @@ $(function(){
 		} else if($(this).hasClass("image")){
 			let no = $(this).data("no");
 			//alert(no);
-			location = "/image/view.do?no="+no+"&inc=1";
+			location = "/image/view.do?no="+no;
+		} else if($(this).hasClass("notice")){
+			let no = $(this).find(".no").text();
+			//alert(no);
+			location = "/notice/view.do?no="+no;
 		}
 	});
 });

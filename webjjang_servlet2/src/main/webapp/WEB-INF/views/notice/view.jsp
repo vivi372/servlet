@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -62,8 +63,10 @@
 		<tr>
 			<td colspan="8">
 				<a href="/notice/list.do?page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }" class="btn btn-dark">목록</a>
-				<a href="/notice/updateForm.do?no=${vo.no}&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }" class="btn btn-light">수정</a>
-				<a href="/notice/delete.do?no=${vo.no }&perPageNum=${param.perPageNum }" class="btn btn-dark" id="deleteBtn">삭제</a>	
+				<c:if test="${!empty login && login.gradeNo==9 }">
+					<a href="/notice/updateForm.do?no=${vo.no}&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }" class="btn btn-light">수정</a>
+					<a href="/notice/delete.do?no=${vo.no }&perPageNum=${param.perPageNum }" class="btn btn-dark" id="deleteBtn">삭제</a>	
+				</c:if>
 				
 			</td>			
 		</tr>		

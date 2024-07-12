@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import com.webjjang.main.controller.Init;
+import com.webjjang.member.vo.LoginVO;
 import com.webjjang.notice.vo.NoticeVO;
 import com.webjjang.util.exe.Execute;
 import com.webjjang.util.page.PageObject;
@@ -18,6 +19,13 @@ public class NoticeController {
 	public String execute(HttpServletRequest request) {
 		String jsp = null;
 		HttpSession session = request.getSession();
+		LoginVO login = (LoginVO) session.getAttribute("login");
+		
+		int gradeNo = 0;
+		
+		if(login != null) {
+			gradeNo = login.getGradeNo();
+		}
 
 		// 메뉴 입력
 		String uri = request.getRequestURI();		
@@ -34,6 +42,17 @@ public class NoticeController {
 				// [NoticeController] - (Execute) - NoticeListService - NoticeDAO.list()
 				System.out.println("1.공지사항 리스트");
 				PageObject pageObject = PageObject.getInstance(request);
+				
+				String period = request.getParameter("period");
+				
+				if(gradeNo == 9) {
+					if(period==null || period.equals("")) {
+						pageObject.setPeriod("all");						
+					} else
+						pageObject.setPeriod(period);
+				}else {
+					pageObject.setPeriod("pre");
+				}
 				// DB에서 데이터 가져오기 - 가져온 데이터는 List<NoticeVO>
 				request.setAttribute("list", Execute.execute(Init.get(uri), pageObject));	
 				request.setAttribute("pageObject", pageObject);

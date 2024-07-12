@@ -19,7 +19,7 @@
 		//날짜 입력 설정 - datepicker
 		let now = new Date();
 		let endYear = now.getFullYear()+10;
-		let yearRange = (endYear - 20) +":" + endYear ;		
+		let yearRange = (endYear - 20) +":" + endYear ;
 		$(".datepicker").datepicker({
 			//년,월 선택 입력 추가
 			changeMonth: true,
@@ -31,7 +31,7 @@
 			monthNamesShort: [ "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" ],
 			"minDate":now,
 			//선택할수 있는 년도 범위 - 10년전부터 10년후 까지
-			yearRange: yearRange		
+			yearRange: yearRange 
 		}
 		);	
 		

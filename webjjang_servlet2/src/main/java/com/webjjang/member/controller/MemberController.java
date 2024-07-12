@@ -66,7 +66,9 @@ public class MemberController {
 				System.out.println("a.로그인 폼");
 				
 				
-				jsp = "member/loginForm";	
+				jsp = "member/loginForm";
+				
+				System.out.println(request.getParameter("no"));
 				//이전 페이지 주소 저장
 				String upcomingUri = (String) session.getAttribute("upcomingUri");
 				

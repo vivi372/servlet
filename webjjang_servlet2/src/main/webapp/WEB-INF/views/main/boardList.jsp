@@ -4,8 +4,7 @@
 
 
 	<div class="border rounded p-3 mb-2 bg-white text-dark shadow-sm">
-		<h3><i class="fa fa-align-justify mb-2"></i>일반 게시판 리스트</h3>	
-		<div class="table-responsive-lg">
+		<h3><i class="fa fa-align-justify mb-2"></i>일반 게시판 리스트</h3>			
 		<table class="table">		
 			<tr>			
 				<th>번호</th>
@@ -21,8 +20,6 @@
 					<td>${vo.writeDate}</td>			
 				</tr>
 			</c:forEach>		
-		</table>
-		
-		</div>
+		</table>	
 	</div>
 

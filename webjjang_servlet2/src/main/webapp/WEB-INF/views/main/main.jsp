@@ -10,12 +10,16 @@
 <script src="/js/main.js"></script>
 </head>
 <body class="bg-light">
-<div class="container">
-	<div class="border rounded p-3 mb-2 bg-white text-dark shadow-sm mb-3">
-		<h2><i class="material-icons">web_asset</i>웹짱 닷컴</h2>
+<div class="container">	
+	<div class="m-3">
+		<h2><i class="fa fa-buysellads text-dark" style="font-size:40px;"></i> <b>웹짱 닷컴</b></h2>
 	</div>
+	
 	<div class="row">
-		<div class="col-md-12 my-3 mx-1">			
+		<div class="col-md-6 my-3 px-1">			
+			<jsp:include page="noticeList.jsp"></jsp:include>
+		</div>	
+		<div class="col-md-6 my-3 px-1">			
 			<jsp:include page="boardList.jsp"></jsp:include>
 		</div>			
 	</div>

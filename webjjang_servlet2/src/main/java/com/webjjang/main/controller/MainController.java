@@ -2,6 +2,9 @@ package com.webjjang.main.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.webjjang.member.vo.LoginVO;
 import com.webjjang.util.exe.Execute;
 import com.webjjang.util.page.PageObject;
 
@@ -19,7 +22,14 @@ public class MainController {
 		
 		//Object result = null;
 		
-		String jsp = null;		
+		String jsp = null;	
+		
+		HttpSession session = request.getSession();
+		int gradeNo = 0;
+		LoginVO login = (LoginVO) session.getAttribute("login");
+		if(login!=null) {
+			gradeNo = login.getGradeNo();
+		}
 
 		
 		try { // 정상 처리
@@ -32,9 +42,18 @@ public class MainController {
 				//페이지 처리를 위한 객체				
 				PageObject pageObject = new PageObject();	
 				
-				//메인에 표시할 데이터 - 일반 게시판/ 이미지 게시판
+				if(gradeNo == 9) {					
+					pageObject.setPeriod("all");				
+				}else {
+					pageObject.setPeriod("pre");
+				}
+				
+				//메인에 표시할 데이터 - 공지 사항/일반 게시판/ 이미지 게시판
 				// DB에서 데이터 가져오기 - 가져온 데이터는 List<BoardVO> / List<ImageVO>				
 				// 가져온 데이터 저장 - request에 저장 -> jsp까지 전달
+				//일반 게시판 데이터 가져오기
+				pageObject.setPerPageNum(7);
+				request.setAttribute("noticeList", Execute.execute(Init.get("/notice/list.do"), pageObject));	
 				//일반 게시판 데이터 가져오기
 				pageObject.setPerPageNum(7);
 				request.setAttribute("boardList", Execute.execute(Init.get("/board/list.do"), pageObject));	
