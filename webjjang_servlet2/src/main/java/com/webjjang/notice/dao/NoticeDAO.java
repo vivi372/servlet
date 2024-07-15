@@ -252,26 +252,18 @@ public class NoticeDAO extends DAO{
 					+ " to_char(startDate, 'yyyy-mm-dd') startDate, "
 					+ " to_char(endDate, 'yyyy-mm-dd') endDate, "
 					+ " to_char(updateDate, 'yyyy-mm-dd') updateDate "
-					+ " from notice "+getSearch(pageObj)
+					+ " from notice where (1=1) "+getPeriod(pageObj)+getSearch(pageObj)
 					+ " order by updateDate desc, no desc))"
 					+ " where rnum between ? and ?";
 		return list;
 	}
 	
-	final String TOTALROW = "select count(*) from notice "; 
-	
+	final String TOTALROW = "select count(*) from notice where (1=1)"; 
+	//단어 검색하는 쿼리를 출력하는 메서드
 	private String getSearch(PageObject pageObj) {
-		String searchSql = "where 1=1 ";
+		String searchSql = " ";
 		String word = pageObj.getWord();
-		if(pageObj.getPeriod().equals("pre")) {
-			searchSql += " and (startDate <= sysDate) and (endDate >= sysDate) ";
-		}
-		if(pageObj.getPeriod().equals("old")) {
-			searchSql += " and (endDate < sysDate) ";
-		}
-		if(pageObj.getPeriod().equals("res")) {
-			searchSql += " and (startDate > sysDate) ";
-		}		
+		
 		if(word != null && !word.equals("")) {
 			String key = pageObj.getKey();
 			searchSql += " and ( 1=0";			
@@ -280,6 +272,19 @@ public class NoticeDAO extends DAO{
 			searchSql+=") ";
 		}
 		return searchSql;
+	}
+	//기간 검색하는 쿼리를 출력하는 메서드
+	private String getPeriod(PageObject pageObj) {
+		String periodSql = " ";
+		String period = pageObj.getPeriod();
+		if(period.equals("pre")) { //현재공지
+			periodSql += " and ( trunc(sysDate) between trunc(startDate) and trunc(endDate) ) ";
+		} else if(period.equals("old")) {//지난 공지
+			periodSql += " and ( trunc(endDate) < trunc(sysDate) ) ";
+		} else if(period.equals("res")) {//예정 공지
+			periodSql += " and ( trunc(startDate) > trunc(sysDate) ) ";
+		} else periodSql += "";//모든 공지
+		return periodSql;
 	}
 	
 	

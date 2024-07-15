@@ -61,12 +61,14 @@
 	
 	article {
 		min-height: 795px;
+		margin-top: 60px;
 	}
 	
 	#welcome {
 		color: grey;
 		margin: 0 auto;
 	}
+	
 	</style>
 
 	<!-- 개발자가 작성한 소스의 head 태그를 여기에 넣게 된다. title은 제외 -->
@@ -74,9 +76,13 @@
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
 		    <a class="nav-link" href="/"><b>웹짱닷컴</b></a>
-			<!-- 주메뉴 부분 -->		
+		    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<!-- 주메뉴 부분 -->					
 			<!-- 오른쪽 부분의 내용을 오른쪽 끝에 두기 위해서 mr-auto사용 -->
 		  	<ul class="navbar-nav mr-auto">	  		
 		    	<li ${(module == '/notice')?"class='nav-item active'":"class='nav-item'"}>
@@ -98,6 +104,7 @@
 			    	</li>		    	
 		    	</c:if>
 		  	</ul>
+		  	
   			
  	 		
 			<ul class="navbar-nav">
@@ -125,30 +132,34 @@
 				<c:if test="${!empty login }">
 					<!-- 로그인을 했을때 -->
 					<li class="nav-item mt-2 mr-1">
-						<img src="${login.photo }" class="rounded-circle mb-1" alt="회원 이미지" width="30px" height="30px">
 						<b class="text-secondary">어서오세요 ${login.name }님</b>
-					</li>
-			  		<li class="nav-item">
-			      		<a class="nav-link" href="/member/logout.do">
-			      			<i class="fa fa-sign-out" style="font-size:19px"></i>
-			      			<b>로그아웃</b>
-			      		</a>
-			    	</li>
-			    	<li class="nav-item">
-			      		<a class="nav-link" href="/member/view.do">
-			      			<i class="fa fa-address-book"></i>
-			      			<b>마이페이지</b>
-			      		</a>
-			    	</li>
-			    	<li class="nav-item">
-			      		<a class="nav-link" href="/cart/list.do">
-			      			<i class="fa fa-shopping-basket"></i>
-			      			<b>장바구니</b>
-			      		</a>
-			    	</li>			    								
+						<img src="${login.photo }" class="rounded-circle mb-1" alt="회원 이미지" width="30px" height="30px">
+						
+					</li>					
+    				<ul class="navbar-nav">
+				  		<li class="nav-item">
+				      		<a class="nav-link" href="/member/logout.do">
+				      			<i class="fa fa-sign-out" style="font-size:19px"></i>
+				      			<b>로그아웃</b>
+				      		</a>
+				    	</li>
+				    	<li class="nav-item">
+				      		<a class="nav-link" href="/member/view.do">
+				      			<i class="fa fa-address-book"></i>
+				      			<b>마이페이지</b>
+				      		</a>
+				    	</li>
+				    	<li class="nav-item">
+				      		<a class="nav-link" href="/cart/list.do">
+				      			<i class="fa fa-shopping-basket"></i>
+				      			<b>장바구니</b>
+				      		</a>
+				    	</li>	
+			    	</ul>	
+			    		    								
 				</c:if>
 		    </ul>
-			
+		    </div>			
 		</nav>
 	
 	</header>

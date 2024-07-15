@@ -8,15 +8,13 @@
 		<table class="table">		
 			<tr>			
 				<th>번호</th>
-				<th>제목</th>
-				<th>작성자</th>
+				<th>제목</th>				
 				<th>작성일</th>			
 			</tr>
 			<c:forEach items="${boardList }" var="vo">
 				<tr class = "dataRow board boardLink">
 					<td class = "no">${vo.no}</td>
-					<td><span class = "text-truncate">${vo.title}</span></td>
-					<td>${vo.writer}</td>
+					<td><span class = "title">${vo.title}</span></td>					
 					<td>${vo.writeDate}</td>			
 				</tr>
 			</c:forEach>		

@@ -16,10 +16,12 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-6 my-3 px-1">			
+		<!-- 한줄을ㄹ 유지 되는 것 정의 - col-해상도-6 : 해상도 md-중간, lg-큰, xl-제일큰 
+		 해상도보다 작아지면 2줄로 표시 -->
+		<div class="col-lg-6 my-3 px-1">			
 			<jsp:include page="noticeList.jsp"></jsp:include>
 		</div>	
-		<div class="col-md-6 my-3 px-1">			
+		<div class="col-lg-6 my-3 px-1">			
 			<jsp:include page="boardList.jsp"></jsp:include>
 		</div>			
 	</div>

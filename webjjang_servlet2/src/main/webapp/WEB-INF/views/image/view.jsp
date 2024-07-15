@@ -66,7 +66,7 @@
 	  					</div>
   					</div>
   					<div class="card-body">	    				
-	    				<p class="card-text"><pre>${imageVO.content }</pre></p>	    				
+	    				<pre class="card-text">${imageVO.content }</pre>    				
   					</div>
 				</div>
 			</div> 

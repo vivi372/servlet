@@ -54,7 +54,7 @@
 		    				<img class="card-img-top" src="${vo.fileName }" alt="Card image">
 		    			</div>
 		    			<div class="card-body">
-		      				<h4 class="card-title text-truncate">${vo.no}. ${vo.title }</h4>
+		      				<h4 class="card-title imageTitle">${vo.no}. ${vo.title }</h4>
 		      				<p class="card-text text-truncate">
 		      					작성자 : ${vo.name }
 		      					<br>

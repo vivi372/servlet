@@ -55,7 +55,7 @@
 			//글번호 필요 - 수집
 			let no = $(this).find(".no").text();
 			console.log(no);
-			let link = "view.do?no="+no+"&inc=1&${pageObject.getPageQuery()}";
+			let link = "view.do?no="+no+"&inc=1&period=${pageObject.period }&${pageObject.getPageQuery()}";
 			location =link;
 		});
 		
@@ -90,25 +90,12 @@
 			else if(this.optList[3].checked) {
 				//alert("모든공지");	
 				location = "/notice/list.do?period=all";
-			}
-			
-// 			$(this).attr("action","/notice/list.do");
-// 			$(this).submit();
-		});
+			}			
+
+		});		
 		
-		if(${param.period == "pre"}){
-			$("#pre").attr("checked","true");
-		} else if(${param.period == "old"}){
-			$("#old").attr("checked","true");
-		} else if(${param.period == "res"}){
-			$("#res").attr("checked","true");
-		} else {
-			$("#all").attr("checked","true");
-		} 
-		
-		
-		
-		
+// 		$("#${pageObject.period}").attr("checked","true");		
+		$("[value='${pageObject.period}']").attr("checked","true");		
 	});
 </script>
 </head>
@@ -117,7 +104,7 @@
 <div class="container">
 	<div class="border rounded p-3 mb-2 bg-white text-dark shadow-sm">
 	<h2><i class="fa fa-align-justify"></i>공지사항 리스트</h2>
-	<form action="list.do" id="search">
+	<form action="list.do?" id="search">
 		<input name="page" value="1" type="hidden">
 		<div class="row">		
 			<div class="col-md-8">				
@@ -148,6 +135,7 @@
 	   						<option value="20">20</option>
 	   						<option value="25">25</option>   							
 	   					</select>
+	   					<input name="period" type="hidden" value="${pageObject.period}">
 	  				</div>
   				</div>
 			</div>	<!-- col-4 end : 한 페이지당 페이지 수 -->	
@@ -155,9 +143,11 @@
 	</form>	
 	<c:if test="${!empty login && login.gradeNo==9 }">	
 		<form class="noticeOpt mb-3">									
-			<div class="custom-control custom-radio custom-control-inline">
-		    	<input type="radio" class="custom-control-input" id="pre" name="optList" value="pre">
-		    	<label class="custom-control-label" for="pre">현재 공지</label>
+			<div class="custom-control custom-radio custom-control-inline">		  
+				<input type="radio" class="custom-control-input" id="pre" name="optList" value="pre">  	
+		    	<label class="custom-control-label" for="pre">
+		    		현재 공지
+		    	</label>
 		  	</div>
 		  	<div class="custom-control custom-radio custom-control-inline">
 		    	<input type="radio" class="custom-control-input" id="old" name="optList" value="old">
@@ -178,7 +168,7 @@
 		<tr>			
 			<th>번호</th>
 			<th>제목</th>
-			<th>게시일</th>
+			<th>시작일</th>
 			<th>종료일</th>			
 			<th>수정일</th>
 		</tr>
@@ -194,7 +184,7 @@
 		<c:if test="${!empty login && login.gradeNo==9 }">
 			<tr>
 				<td colspan="5">
-					<a href="/notice/writeForm.do?${pageObject.getPageQuery()}"><button class="btn btn-dark">글 등록</button></a>
+					<a href="/notice/writeForm.do?period=${pageObject.period }&${pageObject.getPageQuery()}"><button class="btn btn-dark">글 등록</button></a>
 				</td>				
 			</tr>
 			

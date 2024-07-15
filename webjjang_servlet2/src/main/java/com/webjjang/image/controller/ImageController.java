@@ -1,15 +1,14 @@
 package com.webjjang.image.controller;
 
-import java.io.File;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.webjjang.image.vo.ImageVO;
 import com.webjjang.main.controller.Init;
 import com.webjjang.member.vo.LoginVO;
 import com.webjjang.util.exe.Execute;
+import com.webjjang.util.multi.MultiPartUtil;
 import com.webjjang.util.page.PageObject;
 
 // Board Module 에 맞는 메뉴 선택 , 데이터 수집(기능별), 예외 처리
@@ -34,15 +33,10 @@ public class ImageController {
 		if(loginVO != null) id = loginVO.getId();
 		// 입력 받는 데이터 선언
 		Long no = 0L;
-		
-		//파일의 상대적 저장 위치
 		String savePath = "upload/img";
-		//파일 시스템에서는 절대 저장 위치가 필요하다 - 파일 업로드시 필요		
-		String uploadFilePath = request.getServletContext().getRealPath(savePath);		
-		//System.out.println(uploadFilePath);
-		int uploadFileSizeLimit = 100*1024*1024;
-		String encType = "UTF-8";
+		
 		try { // 정상 처리
+			MultiPartUtil multi = new MultiPartUtil(request, savePath);
 		
 			// 메뉴 처리 : CRUD DB 처리 - Controller - Service - DAO
 			switch (uri) {
@@ -90,14 +84,14 @@ public class ImageController {
 				//이미지 업로드 처리
 				//new MultipartRequest(request, 실제저장위치,사이즈 제한,encoding,중복처리객체);
 				//input name을 다르게 해서 올리세요 file1 , file2
-				MultipartRequest multi = new MultipartRequest(request, uploadFilePath,uploadFileSizeLimit,encType,new DefaultFileRenamePolicy());
+				multi.initMultipartRequest();
 				
 				//일반 데이터 수집 : multi에서 수집				
 				String title = multi.getParameter("title");
 				String content = multi.getParameter("content");
 				//아이디는 session에서 받는다. -> 위에서 처리 함
 				
-				String fileName = "/"+savePath+"/"+multi.getFilesystemName("imageFile");
+				String fileName = multi.getParameter("imageFile");
 				ImageVO vo =new ImageVO();
 				vo.setTitle(title);
 				vo.setContent(content);
@@ -117,23 +111,19 @@ public class ImageController {
 				//이미지 업로드 처리
 				//new MultipartRequest(request, 실제저장위치,사이즈 제한,encoding,중복처리객체);
 				//input name을 다르게 해서 올리세요 file1 , file2
-				multi = new MultipartRequest(request, uploadFilePath,uploadFileSizeLimit,encType,new DefaultFileRenamePolicy());
+				multi.initMultipartRequest();
 				no = Long.parseLong(multi.getParameter("no"));				
-				fileName = "/"+savePath+"/"+multi.getFilesystemName("imageFile");
-				String deleteFileName = multi.getParameter("deleteFileName");
+				fileName = multi.getParameter("imageFile");				
 				
 				vo =new ImageVO();
 				vo.setNo(no);				
-				vo.setFileName(fileName);
-				
+				vo.setFileName(fileName);				
 				
 				Execute.execute(Init.get(uri),vo);				
 				//페이지 정보 받기 & uri에 붙이기
 							
 				// 기존 사진 파일 삭제 지난 이미지 파일이 존재하면 지운다.
-				String deleteFilePath = request.getServletContext().getRealPath(deleteFileName);
-				File deleteFile = new File(deleteFilePath);
-				if(deleteFile.exists()) deleteFile.delete();
+				multi.deleteFile("deleteFileName");				
 				
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.
 				jsp = "redirect:view.do?no="+no+"&"+pageObject.getPageQuery();
@@ -180,8 +170,7 @@ public class ImageController {
 				
 				// 데이터 수집 - DB에서 실행에 필요한 데이터 - 글번호, 비밀번호 - BoardVO
 				ImageVO deleteVO = new ImageVO();
-				no = Long.parseLong(request.getParameter("no"));
-				deleteFileName = request.getParameter("deleteFileName");
+				no = Long.parseLong(request.getParameter("no"));				
 				deleteVO.setNo(no);
 				deleteVO.setId(id);				
 				
@@ -194,9 +183,7 @@ public class ImageController {
 				System.out.println("***************************");
 				
 				// 기존 사진 파일 삭제
-				deleteFilePath = request.getServletContext().getRealPath(deleteFileName);
-				deleteFile = new File(deleteFilePath);
-				if(deleteFile.exists()) deleteFile.delete();
+				multi.deleteFile("deleteFileName");	
 				
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.				
 				jsp = "redirect:/image/list.do?perPageNum="+request.getParameter("perPageNum");

@@ -57,12 +57,12 @@
 		<tr>
 			<th>내용</th>
 			<td colspan="8">
-				<pre>${vo.content }</pre>
+				<pre>${vo.content }</pre>            
 			</td>
 		</tr>
 		<tr>
 			<td colspan="8">
-				<a href="/notice/list.do?page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }" class="btn btn-dark">목록</a>
+				<a href="/notice/list.do?period=${param.period }&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }" class="btn btn-dark">목록</a>
 				<c:if test="${!empty login && login.gradeNo==9 }">
 					<a href="/notice/updateForm.do?no=${vo.no}&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }" class="btn btn-light">수정</a>
 					<a href="/notice/delete.do?no=${vo.no }&perPageNum=${param.perPageNum }" class="btn btn-dark" id="deleteBtn">삭제</a>	

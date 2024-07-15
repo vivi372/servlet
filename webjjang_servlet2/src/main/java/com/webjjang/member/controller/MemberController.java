@@ -56,7 +56,7 @@ public class MemberController {
 		String encType = "UTF-8";
 		
 		File realSavePathFile = new File(uploadFilePath);
-		if(realSavePathFile.exists()) realSavePathFile.mkdirs();
+		if(!realSavePathFile.exists()) realSavePathFile.mkdirs();
 		
 		try { // 정상 처리
 		
