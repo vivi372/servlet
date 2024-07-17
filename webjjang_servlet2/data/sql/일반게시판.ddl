@@ -137,11 +137,11 @@ CREATE TABLE qna
 	title                 VARCHAR2(100)  NOT NULL ,
 	content               VARCHAR2(1000)  NOT NULL ,
 	writeDate             DATE   DEFAULT  sysdate NULL ,
-	ordNo                 NUMBER  NOT NULL ,
+	ordNo                 NUMBER  NULL ,
 	levNo                 NUMBER  NULL ,
 CONSTRAINT  XPK질문답변 PRIMARY KEY (no),
 CONSTRAINT  R_27 FOREIGN KEY (refNo) REFERENCES qna(no) ON DELETE SET NULL,
-CONSTRAINT  R_28 FOREIGN KEY (parentNo) REFERENCES qna(no) ON DELETE SET NULL,
+CONSTRAINT  R_28 FOREIGN KEY (parentNo) REFERENCES qna(no) ON DELETE cascade,
 CONSTRAINT  R_29 FOREIGN KEY (id) REFERENCES member(id) ON DELETE SET NULL
 );
 

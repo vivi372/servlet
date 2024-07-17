@@ -27,6 +27,7 @@ import com.webjjang.member.dao.MemberDAO;
 import com.webjjang.member.service.MemberChangeGradeService;
 import com.webjjang.member.service.MemberChangeStatusService;
 import com.webjjang.member.service.MemberCheckIdService;
+import com.webjjang.member.service.MemberConUpdateService;
 import com.webjjang.member.service.MemberListService;
 import com.webjjang.member.service.MemberLoginService;
 import com.webjjang.member.service.MemberWriteService;
@@ -36,6 +37,12 @@ import com.webjjang.notice.service.NoticeListService;
 import com.webjjang.notice.service.NoticeUpdateService;
 import com.webjjang.notice.service.NoticeViewService;
 import com.webjjang.notice.service.NoticeWriteService;
+import com.webjjang.qna.dao.QnaDAO;
+import com.webjjang.qna.service.QnaDeleteService;
+import com.webjjang.qna.service.QnaListService;
+import com.webjjang.qna.service.QnaUpdateService;
+import com.webjjang.qna.service.QnaViewService;
+import com.webjjang.qna.service.QnaWriteService;
 
 public class Init {
 	
@@ -48,6 +55,7 @@ public class Init {
 	static {
 		// DAO 생성
 		daoMap.put("boardDAO", new BoardDAO()); // 일반 게시판 DAO
+		daoMap.put("qnaDAO", new QnaDAO()); // 일반 게시판 DAO
 		daoMap.put("boardReplyDAO", new BoardReplyDAO()); // 일반 게시판 댓글 DAO
 		daoMap.put("memberDAO", new MemberDAO()); // 회원 관리 DAO
 		daoMap.put("imageDAO", new ImageDAO()); // 이미지 게시판 DAO
@@ -60,6 +68,12 @@ public class Init {
 		serviceMap.put("/board/write.do", new BoardWriteService());
 		serviceMap.put("/board/update.do", new BoardUpdateService());
 		serviceMap.put("/board/delete.do", new BoardDeleteService());
+		// 질문 답변 게시판 서비스
+		serviceMap.put("/qna/list.do", new QnaListService());
+		serviceMap.put("/qna/view.do", new QnaViewService());		
+		serviceMap.put("/qna/write.do", new QnaWriteService());
+		serviceMap.put("/qna/update.do", new QnaUpdateService());
+		serviceMap.put("/qna/delete.do", new QnaDeleteService());
 		// 일반 게시판 댓글 서비스
 		serviceMap.put("/boardreply/list.do", new BoardReplyListService());
 		serviceMap.put("/boardreply/write.do", new BoardReplyWriteService());
@@ -71,6 +85,7 @@ public class Init {
 		serviceMap.put("/member/write.do", new MemberWriteService());
 		serviceMap.put("/member/changeGrade.do", new MemberChangeGradeService());
 		serviceMap.put("/member/changeStatus.do", new MemberChangeStatusService());
+		serviceMap.put("/member/updateConDate.do", new MemberConUpdateService());
 		serviceMap.put("/ajax/checkId.do", new MemberCheckIdService());
 		// 이미지 게시판 서비스
 		serviceMap.put("/image/list.do", new ImageListService());
@@ -93,6 +108,12 @@ public class Init {
 		serviceMap.get("/board/write.do").setDAO(daoMap.get("boardDAO"));
 		serviceMap.get("/board/update.do").setDAO(daoMap.get("boardDAO"));
 		serviceMap.get("/board/delete.do").setDAO(daoMap.get("boardDAO"));
+		// 질문 답변 서비스 DAO 조립
+		serviceMap.get("/qna/list.do").setDAO(daoMap.get("qnaDAO"));	
+		serviceMap.get("/qna/view.do").setDAO(daoMap.get("qnaDAO"));		
+		serviceMap.get("/qna/write.do").setDAO(daoMap.get("qnaDAO"));
+		serviceMap.get("/qna/update.do").setDAO(daoMap.get("boardDAO"));
+		serviceMap.get("/qna/delete.do").setDAO(daoMap.get("boardDAO"));
 		// 일반 게시판 댓글 서비스 DAO 조립
 		serviceMap.get("/boardreply/list.do").setDAO(daoMap.get("boardReplyDAO"));
 		serviceMap.get("/boardreply/write.do").setDAO(daoMap.get("boardReplyDAO"));
@@ -104,6 +125,7 @@ public class Init {
 		serviceMap.get("/member/write.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/changeGrade.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/changeStatus.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/member/updateConDate.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/ajax/checkId.do").setDAO(daoMap.get("memberDAO"));
 		// 이미지 게시판 서비스 DAO 조립
 		serviceMap.get("/image/list.do").setDAO(daoMap.get("imageDAO"));

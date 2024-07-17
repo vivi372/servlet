@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,13 +32,28 @@
 				//$("#checkIdDiv") 안에 넣을 문구를 가져 와서 넣는다.
 				//ajx의 load 함수 사용 load(url , data , function(){})
 				//status -상태 - success/error, 통신객체
-				$("#checkIdDiv").load("/ajax/checkId.do?id="+id , function(result) {
-					if(result.indexOf("중복")>=0) {
-						$("#checkIdDiv").removeClass("alert-success alert-danger alert-warning").addClass("alert-danger");
-					} else {
-						$("#checkIdDiv").removeClass("alert-success alert-danger alert-warning").addClass("alert-success");					
-					}				
-				}); // load()의 끝
+				
+// 				$("#checkIdDiv").load("/ajax/checkId.do?id="+id , function(result) {
+// 					if(result.indexOf("중복")>=0) {
+// 						$("#checkIdDiv").removeClass("alert-success alert-danger alert-warning").addClass("alert-danger");
+// 					} else {
+// 						$("#checkIdDiv").removeClass("alert-success alert-danger alert-warning").addClass("alert-success");					
+// 					}				
+// 				}); // load()의 끝
+				
+				$.ajax({
+					url: "/ajax/checkId.do?id="+id,
+					success: function(data) {
+						console.log("ajax - "+data);						
+						if(data != id) {
+	 						$("#checkIdDiv").removeClass("alert-success alert-danger alert-warning").addClass("alert-success");					
+	 						$("#checkIdDiv").text("사용가능한 아이디입니다.");
+	 					} else {
+	 						$("#checkIdDiv").removeClass("alert-success alert-danger alert-warning").addClass("alert-danger");
+	 						$("#checkIdDiv").text("중복된 아이디입니다. 다른 아이디를 입력해주세요.");
+	 					}				
+					}
+				});
 			} // if ~ else의 끝
 			
 		}); // $("#id").keyup()의 끝
@@ -115,7 +131,8 @@
 			</div>
 			<div id="checkIdDiv" class="alert alert-warning">
 				아이디는 필수 입력 입니다. 3글자 이상입니다.
-			</div>
+			</div>			
+			
 			<div class="form-group">
 				<label for="pw">비밀번호</label> 
 				<input type="password" class="form-control" placeholder="비밀번호 입력" id="pw" name="pw"

@@ -8,6 +8,7 @@
 	<decorator name="main" page="default_decorator.jsp">
 		<pattern>/main/*</pattern>
 		<pattern>/board/*</pattern>
+		<pattern>/qna/*</pattern>
 		<pattern>/notice/*</pattern>
 		<pattern>/shop/*</pattern>
 		<pattern>/image/*</pattern>		

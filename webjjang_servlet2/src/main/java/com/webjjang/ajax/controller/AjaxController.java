@@ -2,6 +2,8 @@ package com.webjjang.ajax.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.webjjang.main.controller.Init;
 import com.webjjang.util.exe.Execute;
 
@@ -9,7 +11,7 @@ import com.webjjang.util.exe.Execute;
 public class AjaxController {
 
 	
-	public String execute(HttpServletRequest request) {
+	public String execute(HttpServletRequest request,HttpServletResponse response) {
 		System.out.println("AjaxController.execute()");		
 		
 		//login된 정보 중에서 id를 많이 사용한다.
@@ -38,7 +40,7 @@ public class AjaxController {
 				id = (String) Execute.execute(Init.get(uri),id);
 				//jsp 정보 앞에 "redirect:"가 붙어 있으면 redirect 아니면 forward를 시킨다.		
 				
-				request.setAttribute("id", id);
+				response.getWriter().print(id);
 				jsp = "ajax/checkId";
 				
 				break;	
@@ -58,5 +60,6 @@ public class AjaxController {
 		} // end of try~catch		
 		return jsp;
 	} // end of execute()
+
 	
 } // end of class

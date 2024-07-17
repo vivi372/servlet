@@ -13,6 +13,7 @@ import com.webjjang.boardreply.controller.BoardReplyController;
 import com.webjjang.image.controller.ImageController;
 import com.webjjang.member.controller.MemberController;
 import com.webjjang.notice.controller.NoticeController;
+import com.webjjang.qna.controller.QnaController;
 
 
 /**
@@ -32,6 +33,7 @@ public class DispatcharServlet extends HttpServlet {
 	private MemberController memberController = new MemberController();
 	private ImageController imageController = new ImageController();
 	private NoticeController noticeController = new NoticeController();
+	private QnaController qnaController = new QnaController();
 	private AjaxController ajaxController = new AjaxController();
 	
        
@@ -108,6 +110,12 @@ public class DispatcharServlet extends HttpServlet {
 			jsp = boardController.execute(request);			
 					
 			break;
+		case "/qna":
+			System.out.println("질문답변 게시판");
+			
+			jsp = qnaController.execute(request);			
+					
+			break;
 		case "/boardreply":
 			System.out.println("일반 게시판 댓글");
 			
@@ -120,8 +128,8 @@ public class DispatcharServlet extends HttpServlet {
 			break;
 		case "/ajax":
 			System.out.println("아작스");					
-			jsp = ajaxController.execute(request);
-			break;
+			jsp = ajaxController.execute(request,response);
+			return;
 		case "/image":
 			System.out.println("이미지 게시판");		
 			
